@@ -14,6 +14,8 @@ WHITESPACE: [ \t\r\n]+ -> skip;
 outputs: 
     'outputs:' signal_list;
 
+signal_list:
+    SIGNAL (SIGNAL)*;
 
 
 
