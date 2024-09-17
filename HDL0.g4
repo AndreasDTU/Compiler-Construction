@@ -3,7 +3,7 @@ grammar HDL0;
 //Lexer Rules
 HARDWARE: 'hardware' ;
 INPUTS: 
-signal_list: 
+    'inputs:' signal_list;
 EXP: 
     |
     | (EXP)
