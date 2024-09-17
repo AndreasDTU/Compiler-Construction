@@ -1,5 +1,19 @@
-grammar prog;
+grammar HDL0;
 
-start   : cmd* EOF ;
+//Lexer Rules
+SIGNAL: [0-1];
+NUMBER
+WHITESPACE: [ \t\r\n]+ -> skip;
 
-cmd : IDENT '=' exp ';'
+
+
+
+//Parser Rules
+
+
+outputs: 
+    'outputs:' signal_list;
+
+
+
+
