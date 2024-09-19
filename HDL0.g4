@@ -22,10 +22,8 @@ SIGNAL: [IDENT']*;
 hdl0
     : hardware inputs outputs latches? definitions? updates siminputs;
 
-hardware: 'hardware' SIGNAL;
-
-definitions:
-    (definition)*; 
+hardware: 
+    hardware' SIGNAL;
 
 inputs:
     'inputs:' signal_list
@@ -36,20 +34,28 @@ outputs:
 latches :
     'latches' signal_list;
 
-definition:
-    IDENT "("signal_list")" "=" EXP;
+definitions:
+    (definition)*; 
+
+updates:
+    'updates:' (update)+;
+
+siminputs:
+    'siminputs:' (siminput+);
+
 
 signal_list:
     SIGNAL (SIGNAL)*;
 
-updates
-    : 'updates:' (update)+;
+definition:
+    'def:' SIGNAL '(' signal_list ')' '=' EXP;
 
 update
     : SIGNAL '=' expression;
 
-siminput
-    : SIGNAL '=' BOOLEAN+;
+siminput:
+    SIGNAL '=' BOOLEAN+;
+
 
 
 function_call
