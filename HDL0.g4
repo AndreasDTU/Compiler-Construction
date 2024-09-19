@@ -5,8 +5,7 @@ NUMBER: [0-9]+;
 BOOLEAN: '0' | '1';  
 WHITESPACE: [ \t\r\n]+ -> skip;
 IDENT: [a-zA-Z][a-zA-Z0-9]*;
-SIGNAL: IDENT '\''?;  // Handles signal names with optional prime (e.g., Oscillator')
-
+SIGNAL: IDENT '\''?; 
 
 // Keywords and Symbols as Lexer Tokens
 HARDWARE: 'hardware';
@@ -24,6 +23,7 @@ COMMA: ',';
 AND: '*';
 OR: '+';
 NOT: '/';
+
 
 
 // Parser Rules
@@ -66,12 +66,12 @@ siminput:
 
 // Expression Rules
 exp:
-      NOT exp              // Negation
-    | exp AND exp           // AND
-    | exp OR exp            // OR
-    | function_call         // Function calls
-    | LPAREN exp RPAREN     // Parentheses
-    | SIGNAL                // Signal
+      NOT exp          
+    | exp AND exp
+    | exp OR exp           
+    | function_call         
+    | LPAREN exp RPAREN     
+    | SIGNAL                
     ;
 
 function_call
