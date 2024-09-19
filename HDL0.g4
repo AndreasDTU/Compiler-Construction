@@ -2,8 +2,6 @@ grammar HDL0;
 
 //Lexer Rules
 
-INPUTS: 
-    'inputs:' signal_list;
 EXP: 
     |
     | (EXP)
