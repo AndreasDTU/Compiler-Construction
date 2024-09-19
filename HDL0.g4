@@ -3,11 +3,12 @@ grammar HDL0;
 //Lexer Rules
 
 EXP: 
-    | '/'
+    | '/' EXP
     | '*'
     | '+'
     | function_call
     | '('EXP')'
+    | SIGNAL
     ;
 SIGNAL: [0-1];
 NUMBER: [0-9]+;  
