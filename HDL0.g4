@@ -24,7 +24,7 @@ hardware:
     hardware' SIGNAL;
 
 inputs:
-    'inputs:' signal_list
+    'inputs:' signal_list;
 
 outputs: 
     'outputs:' signal_list;
