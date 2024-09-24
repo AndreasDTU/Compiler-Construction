@@ -1,4 +1,4 @@
-antlrjar = antlr-4.13.2-complete.jar
+antlrjar = ../lib/antlr-4.13.2-complete.jar
 
 ###### FOR LINUX AND MAC -- comment the following line if you use Windows:
 #classpath = '$(antlrjar):.'

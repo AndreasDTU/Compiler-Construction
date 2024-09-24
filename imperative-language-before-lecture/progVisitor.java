@@ -16,9 +16,38 @@ public interface progVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStart(progParser.StartContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link progParser#exp}.
+	 * Visit a parse tree produced by the {@code Variable}
+	 * labeled alternative in {@link progParser#exp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExp(progParser.ExpContext ctx);
+	T visitVariable(progParser.VariableContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code AddSub}
+	 * labeled alternative in {@link progParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAddSub(progParser.AddSubContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Constant}
+	 * labeled alternative in {@link progParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstant(progParser.ConstantContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Paren}
+	 * labeled alternative in {@link progParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParen(progParser.ParenContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MultDiv}
+	 * labeled alternative in {@link progParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultDiv(progParser.MultDivContext ctx);
 }
