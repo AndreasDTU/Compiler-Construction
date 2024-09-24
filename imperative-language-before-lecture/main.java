@@ -47,7 +47,9 @@ public class main {
 
 class Interpreter extends AbstractParseTreeVisitor<Double>
                   implements progVisitor<Double> {
+	
     // todo - Java will complain that "Interpreter" does not in fact
     // implement "implVisitor" at the moment.
+	public Double visitStart();
 }
 
