@@ -11,7 +11,7 @@ SRCFILES = main.java
 GENERATED = progListener.java progBaseListener.java progParser.java progLexer.java
 
 all:	
-	make grun
+	make run
 
 progLexer.java:	prog.g4
 	$(antlr4) -visitor prog.g4
@@ -26,9 +26,9 @@ main.class:	progLexer.java main.java
 	javac -cp $(classpath) $(GENERATED) main.java
 
 run:	main.class
-	java -cp $(classpath) main prog.txt
+	java -cp $(classpath) main prog.txt; make clean
 
 
 
 clean:
-	rm -f *.class *.tokens *.interp *.java
+	@find . -maxdepth 1 -type f \( -name '*.class' -o -name '*.tokens' -o -name '*.interp' \) ! -name 'main.java' -exec rm -f {} +

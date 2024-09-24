@@ -6,11 +6,9 @@ start   : exp EOF ;
 
 exp : IDENTIFIER	
     | FLOAT		
-    | exp '+' exp 
-    | exp '-' exp 
-    | exp '*' exp 
-    | exp '/' exp 
-    | '(' exp ')'   	
+    | exp ('*'|'/') exp
+    | exp ('+'|'-') exp
+    | exp '(' exp ')'  	
     ;
     
 IDENTIFIER : [a-zA-Z] [a-zA-Z_0-9]* ;  // x17y
