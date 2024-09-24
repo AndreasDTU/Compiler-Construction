@@ -1,4 +1,4 @@
-antlrjar = antlr-4.13.2-complete.jar
+antlrjar = lib/antlr-4.13.2-complete.jar
 
 ###### FOR LINUX AND MAC -- uncomment the following line if you do not use Windows:
 # classpath = '$(antlrjar):.'
@@ -24,4 +24,4 @@ grun:	HDL0Lexer.class cc.txt
 	$(grun) HDL0 hdl0 -gui -tokens 01-hello-world.hw; make clean
 
 clean:
-	rm -f *.class *.tokens *.interp *.java
+	@find . -maxdepth 1 -type f \( -name '*.class' -o -name '*.tokens' -o -name '*.interp' \) ! -name 'main.java' -exec rm -f {} +

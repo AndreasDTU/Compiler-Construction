@@ -47,35 +47,52 @@ public class main {
 
 class Interpreter extends AbstractParseTreeVisitor<Double>
                   implements progVisitor<Double> {
-	
     // todo - Java will complain that "Interpreter" does not in fact
     // implement "implVisitor" at the moment.
-	public Double visitStart(progParser.StartContext ctx) {
-		return visit(ctx.e);
+
+
+	public Double visitStart(progParser.StartContext ctx){
+	    return visit(ctx.e);
 	}
-	public Double visitVariable(progParser.VariableContext ctx) {
-		return null;
+	public Double visitVariable(progParser.VariableContext ctx){
+	    System.err.println("Variables are not yet supported.\n");
+	    System.exit(-1);
+	    return null; }
+	public Double visitAddSub(progParser.AddSubContext ctx){
+	    // e1=exp op=('+'|'-') e2=exp
+	    System.out.println("Addition/Subtraction");
+	    Double d1=visit(ctx.e1);
+	    Double d2=visit(ctx.e2);
+	    if (ctx.op.getText().equals("+")){
+		System.out.println("Add "+d1+" + "+d2+" = "+(d1+d2));
+		return d1+d2;
+	    }
+	    else{
+		System.out.println("Sub "+d1+" - "+d2+" = "+(d1-d2));
+		return d1-d2;
+	    }
 	}
-	public Double visitAddSub(progParser.AddSubContext ctx) {
-		Double d1=visit(ctx.e1);
-		Double d2=visit(ctx.e2);
-		if (ctx.op.getText().equals("+"))
-			return d1+d2;
-		else return d1-d2;
+	public Double visitConstant(progParser.ConstantContext ctx){
+	    String s=ctx.f.getText();
+	    System.out.println("Constant "+s);
+	    return Double.valueOf(s);
+	}
+	public Double visitParen(progParser.ParenContext ctx){ return visit(ctx.e); }
+	public Double visitMultDiv(progParser.MultDivContext ctx){
+	    System.out.println("Mult/Div");
+	    Double d1=visit(ctx.e1);
+	    Double d2=visit(ctx.e2);
+	    if (ctx.op.getText().equals("*")){
+		System.out.println("Mult "+d1+" * "+d2+" = "+(d1*d2));
+		return d1*d2;
+	    }
+	    else{
+		System.out.println("Div "+d1+" / "+d2+" = "+(d1/d2));				
+		return d1/d2;	
+	    }
+    
 	}
 
-	public Double visitConstant(progParser.ConstantContext ctx) {
-		String s = ctx.f.getText();
-		return Double.valueOf(s);
-	}
 
-	public Double visitParen(progParser.ParenContext ctx) {return visit(ctx.e);}
-	public Double visitMultDiv(progParser.MultDivContext ctx) {
-		Double d1=visit(ctx.e1);
-		Double d2=visit(ctx.e2);
-		if (ctx.op.getText().equals("*")){
-			return d1*d2;
-		} else return d1/d2;
-	}
 }
 
