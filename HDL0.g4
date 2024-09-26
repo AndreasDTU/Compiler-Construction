@@ -23,7 +23,8 @@ AND: '*';
 OR: '+';
 NOT: '/';
 
-
+COMMENT : '//' ~[\n]* -> skip;
+LONGCOMMENT : '/*' (~[*] | '*'~[/])* '*/' -> skip;
 
 // Parser Rules
 
@@ -55,7 +56,7 @@ signal_list:
     SIGNAL (SIGNAL)*;
 
 definition:
-    DEFINITIONS SIGNAL LPAREN signal_list RPAREN EQ exp;
+    DEFINITIONS SIGNAL LPAREN (',' | signal_list)*  RPAREN EQ exp;
 
 
 
@@ -64,12 +65,12 @@ siminput:
 
 // Expression Rules
 exp:  NOT exp
-    | SIGNAL (NOT SIGNAL)?            
+    | (NOT SIGNAL)? SIGNAL (NOT SIGNAL)?            
     | exp AND exp
     | exp OR exp           
     | function_call         
     | LPAREN exp RPAREN     
-    | SIGNAL                
+    | SIGNAL*               
     ;
 
 update:
