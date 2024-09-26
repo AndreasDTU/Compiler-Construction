@@ -20,8 +20,11 @@ HDL0Lexer.java:	HDL0.g4
 HDL0Lexer.class:	HDL0Lexer.java
 	javac -cp $(classpath) $(GENERATED)
 
-grun:	HDL0Lexer.class cc.txt
-	$(grun) HDL0 hdl0 -gui -tokens 01-hello-world.hw; make clean
+grun: HDL0Lexer.class cc.txt
+	$(grun) HDL0 hdl0 -gui -tokens $(file); make clean
+
+# Allow file to be passed as an argument
+file ?= 01-hello-world.hw  # You can set a default file if needed
 
 clean:
 	@find . -maxdepth 1 -type f \( -name '*.class' -o -name '*.tokens' -o -name '*.interp' \) ! -name 'main.java' -exec rm -f {} +
