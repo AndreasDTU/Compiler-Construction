@@ -5,6 +5,8 @@ BOOLEAN: '0' | '1';
 WHITESPACE: [ \t\r\n]+ -> skip;
 fragment IDENT: [a-zA-Z][a-zA-Z0-9]*;
 SIGNAL: IDENT '\''?; 
+COMMENT : '//' ~[\n]* -> skip;
+LONGCOMMENT : '/*' (~[*] | '*'~[/])* '*/' -> skip;
 
 // Keywords and Symbols as Lexer Tokens
 HARDWARE: 'hardware:';
@@ -23,8 +25,6 @@ AND: '*';
 OR: '+';
 NOT: '/';
 
-COMMENT : '//' ~[\n]* -> skip;
-LONGCOMMENT : '/*' (~[*] | '*'~[/])* '*/' -> skip;
 
 // Parser Rules
 
