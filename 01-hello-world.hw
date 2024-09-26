@@ -7,7 +7,7 @@ latches: Oscillator
 
 updates:
 
-Oscillator = /Oscillator' /Reset
+Oscillator = /Oscillator' * /Reset
 
 siminputs:
 Reset=0000100

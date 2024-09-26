@@ -22,13 +22,13 @@ public class main {
 	    //new ANTLRFileStream (filename); // depricated
 	
 	// create a lexer/scanner
-	progLexer lex = new progLexer(input);
+	HDL0Lexer lex = new HDL0Lexer(input);
 	
 	// get the stream of tokens from the scanner
 	CommonTokenStream tokens = new CommonTokenStream(lex);
 	
 	// create a parser
-	progParser parser = new progParser(tokens);
+	HDL0Parser parser = new HDL0Parser(tokens);
 	
 	// and parse anything from the grammar for "start"
 	ParseTree parseTree = parser.start();
@@ -46,19 +46,19 @@ public class main {
 // simply a Double.
 
 class Interpreter extends AbstractParseTreeVisitor<Double>
-                  implements progVisitor<Double> {
+                  implements HDL0Parser {
     // todo - Java will complain that "Interpreter" does not in fact
     // implement "implVisitor" at the moment.
 
 
-	public Double visitStart(progParser.StartContext ctx){
+	public Double visitStart(HDL0Parser.StartContext ctx){
 	    return visit(ctx.e);
 	}
-	public Double visitVariable(progParser.VariableContext ctx){
+	public Double visitVariable(HDL0Parser.VariableContext ctx){
 	    System.err.println("Variables are not yet supported.\n");
 	    System.exit(-1);
 	    return null; }
-	public Double visitAddSub(progParser.AddSubContext ctx){
+	public Double visitAddSub(HDL0Parser.AddSubContext ctx){
 	    // e1=exp op=('+'|'-') e2=exp
 	    System.out.println("Addition/Subtraction");
 	    Double d1=visit(ctx.e1);
@@ -72,13 +72,13 @@ class Interpreter extends AbstractParseTreeVisitor<Double>
 		return d1-d2;
 	    }
 	}
-	public Double visitConstant(progParser.ConstantContext ctx){
+	public Double visitConstant(HDL0Parser.ConstantContext ctx){
 	    String s=ctx.f.getText();
 	    System.out.println("Constant "+s);
 	    return Double.valueOf(s);
 	}
-	public Double visitParen(progParser.ParenContext ctx){ return visit(ctx.e); }
-	public Double visitMultDiv(progParser.MultDivContext ctx){
+	public Double visitParen(HDL0Parser.ParenContext ctx){ return visit(ctx.e); }
+	public Double visitMultDiv(HDL0Parser.MultDivContext ctx){
 	    System.out.println("Mult/Div");
 	    Double d1=visit(ctx.e1);
 	    Double d2=visit(ctx.e2);

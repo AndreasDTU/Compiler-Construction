@@ -1,4 +1,4 @@
-// Generated from prog.g4 by ANTLR 4.13.2
+// Generated from HDL0.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
  * operations with no return type.
  */
 @SuppressWarnings("CheckReturnValue")
-public class progBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements HDL0Visitor<T> {
+public class HDL0BaseVisitor<T> extends AbstractParseTreeVisitor<T> implements HDL0Visitor<T> {
 	/**
 	 * {@inheritDoc}
 	 *

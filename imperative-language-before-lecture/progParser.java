@@ -111,7 +111,7 @@ public class progParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof progVisitor ) return ((progVisitor<? extends T>)visitor).visitStart(this);
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitStart(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -166,7 +166,7 @@ public class progParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof progVisitor ) return ((progVisitor<? extends T>)visitor).visitVariable(this);
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitVariable(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -192,7 +192,7 @@ public class progParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof progVisitor ) return ((progVisitor<? extends T>)visitor).visitAddSub(this);
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitAddSub(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -211,7 +211,7 @@ public class progParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof progVisitor ) return ((progVisitor<? extends T>)visitor).visitConstant(this);
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitConstant(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -232,7 +232,7 @@ public class progParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof progVisitor ) return ((progVisitor<? extends T>)visitor).visitParen(this);
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitParen(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -258,7 +258,7 @@ public class progParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof progVisitor ) return ((progVisitor<? extends T>)visitor).visitMultDiv(this);
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitMultDiv(this);
 			else return visitor.visitChildren(this);
 		}
 	}
