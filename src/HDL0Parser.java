@@ -1,4 +1,5 @@
 // Generated from HDL0.g4 by ANTLR 4.13.2
+package src;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -127,14 +128,6 @@ public class HDL0Parser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_hdl0; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterHdl0(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitHdl0(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitHdl0(this);
 			else return visitor.visitChildren(this);
@@ -200,14 +193,6 @@ public class HDL0Parser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_hardware; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterHardware(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitHardware(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitHardware(this);
 			else return visitor.visitChildren(this);
@@ -247,14 +232,6 @@ public class HDL0Parser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_inputs; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterInputs(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitInputs(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitInputs(this);
@@ -296,14 +273,6 @@ public class HDL0Parser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_outputs; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterOutputs(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitOutputs(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitOutputs(this);
 			else return visitor.visitChildren(this);
@@ -343,14 +312,6 @@ public class HDL0Parser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_latches; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterLatches(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitLatches(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitLatches(this);
@@ -393,14 +354,6 @@ public class HDL0Parser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_definitions; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterDefinitions(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitDefinitions(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitDefinitions(this);
@@ -455,14 +408,6 @@ public class HDL0Parser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_updates; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterUpdates(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitUpdates(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitUpdates(this);
@@ -520,14 +465,6 @@ public class HDL0Parser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_siminputs; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterSiminputs(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitSiminputs(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitSiminputs(this);
 			else return visitor.visitChildren(this);
@@ -582,14 +519,6 @@ public class HDL0Parser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_signal_list; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterSignal_list(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitSignal_list(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitSignal_list(this);
@@ -659,14 +588,6 @@ public class HDL0Parser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_definition; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterDefinition(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitDefinition(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitDefinition(this);
@@ -747,14 +668,6 @@ public class HDL0Parser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_siminput; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterSiminput(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitSiminput(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitSiminput(this);
 			else return visitor.visitChildren(this);
@@ -826,14 +739,6 @@ public class HDL0Parser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_exp; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitExp(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitExp(this);
@@ -1003,14 +908,6 @@ public class HDL0Parser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_update; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterUpdate(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitUpdate(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitUpdate(this);
 			else return visitor.visitChildren(this);
@@ -1061,14 +958,6 @@ public class HDL0Parser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_function_call; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterFunction_call(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitFunction_call(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitFunction_call(this);

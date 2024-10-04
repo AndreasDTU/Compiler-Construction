@@ -1,35 +1,40 @@
-antlrjar = lib/antlr-4.13.2-complete.jar
+# Variables
+ANTLR_JAR = antlr-4.13.2-complete.jar
+SRC_DIR = src
+GEN_DIR = src
+INPUT_FILE = 01-hello-world.hw
+OUTPUT_FILE = hello-world.html
 
-###### FOR LINUX AND MAC -- uncomment the following line if you do not use Windows:
-# classpath = '$(antlrjar):.'
+# Java compiler and classpath
+JAVAC = javac
+JAVA = java
+CLASSPATH = .:$(ANTLR_JAR):$(GEN_DIR)
 
-###### FOR WINDOWS -- comment the following line if you do not use Windows:
-classpath = '$(antlrjar);.'
+# Target to generate the ANTLR parser and lexer
+$(GEN_DIR)/HDL0Lexer.java: HDL0.g4
+	@echo "Generating ANTLR lexer and parser..."
+	$(JAVA) -jar $(ANTLR_JAR) -Dlanguage=Java -visitor -no-listener -o $(GEN_DIR) HDL0.g4
 
-antlr4 = java -cp $(classpath) org.antlr.v4.Tool
-grun = java -cp $(classpath) org.antlr.v4.gui.TestRig
-SRCFILES = main.java
-GENERATED = HDL0Listener.java HDL0BaseListener.java HDL0Parser.java HDL0Lexer.java 
 
-all:	
-	make grun
+# Target to compile the generated ANTLR files and your Java files
+compile: $(GEN_DIR)/HDL0Lexer.java
+	@echo "Compiling ANTLR-generated and source Java files..."
+	$(JAVAC) -cp "$(CLASSPATH)" $(GEN_DIR)/HDL0Lexer.java $(GEN_DIR)/HDL0Parser.java $(SRC_DIR)/*.java
 
-HDL0Lexer.java:	HDL0.g4
-	$(antlr4) -visitor HDL0.g4
+# Target to run the program and output HTML
+run: compile
+	@echo "Running prettyprint visitor on $(INPUT_FILE)..."
+	$(JAVA) -cp "$(CLASSPATH)" PrettyPrintMain "$(INPUT_FILE)" > "$(OUTPUT_FILE)"
+	@echo "HTML output generated: $(OUTPUT_FILE)"
 
-HDL0Lexer.class:	HDL0Lexer.java
-	javac -cp $(classpath) $(GENERATED)
-
-grun: HDL0Lexer.class cc.txt
-	$(grun) HDL0 hdl0 -gui -tokens $(file); make clean
-
-run: main.class
-	java -cp $(classpath) main $(file); make clean
-
-main.class:	HDL0Lexer.java main.java
-	javac -cp $(classpath) $(GENERATED) main.java
-# Allow file to be passed as an argument
-#file ?= 01-hello-world.hw  # You can set a default file if needed
-
+# Clean the generated and compiled files
 clean:
-	@find . -maxdepth 1 -type f \( -name '*.class' -o -name '*.tokens' -o -name '*.interp' \) ! -name 'main.java' -exec rm -f {} +
+	@echo "Cleaning up..."
+	find "$(GEN_DIR)" -type f -name '*.interp' -delete
+	find "$(GEN_DIR)" -type f -name '*.tokens' -delete
+	find "$(GEN_DIR)" -type f -name '*.class' -delete
+	find "$(SRC_DIR)" -type f -name '*.class' -delete
+	-rm -f "$(OUTPUT_FILE)"
+
+# Phony targets
+.PHONY: compile run clean
