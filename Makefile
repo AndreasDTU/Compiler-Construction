@@ -1,19 +1,14 @@
-# Variables
 antlrjar = antlr-4.13.2-complete.jar
-SRC_DIR = src
-GEN_DIR = src
-INPUT_FILE = 01-hello-world.hw
-OUTPUT_FILE = hello-world.html
 
-# Java compiler and classpath
-JAVAC = javac
-JAVA = java
+###### FOR LINUX AND MAC -- uncomment the following line if you do not use Windows:
+classpath = '$(antlrjar):.'
+###### FOR WINDOWS -- comment the following line if you do not use Windows:
+#classpath = '$(antlrjar);.'
+
 antlr4 = java -cp $(classpath) org.antlr.v4.Tool
-classpath = $(antlrjar):.
 grun = java -cp $(classpath) org.antlr.v4.gui.TestRig
 SRCFILES = main.java
 GENERATED = HDL0Listener.java HDL0BaseListener.java HDL0Parser.java HDL0Lexer.java
-
 
 all:	
 	make grun
