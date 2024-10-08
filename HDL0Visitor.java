@@ -97,13 +97,6 @@ public interface HDL0Visitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOr(HDL0Parser.OrContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ListSignal}
-	 * labeled alternative in {@link HDL0Parser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitListSignal(HDL0Parser.ListSignalContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code And}
 	 * labeled alternative in {@link HDL0Parser#exp}.
 	 * @param ctx the parse tree
@@ -130,10 +123,4 @@ public interface HDL0Visitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitUpdate(HDL0Parser.UpdateContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link HDL0Parser#function_call}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunction_call(HDL0Parser.Function_callContext ctx);
 }

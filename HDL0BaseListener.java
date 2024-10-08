@@ -184,18 +184,6 @@ public class HDL0BaseListener implements HDL0Listener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterListSignal(HDL0Parser.ListSignalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitListSignal(HDL0Parser.ListSignalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterAnd(HDL0Parser.AndContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -239,18 +227,6 @@ public class HDL0BaseListener implements HDL0Listener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitUpdate(HDL0Parser.UpdateContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunction_call(HDL0Parser.Function_callContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunction_call(HDL0Parser.Function_callContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

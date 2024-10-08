@@ -153,18 +153,6 @@ public interface HDL0Listener extends ParseTreeListener {
 	 */
 	void exitOr(HDL0Parser.OrContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ListSignal}
-	 * labeled alternative in {@link HDL0Parser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void enterListSignal(HDL0Parser.ListSignalContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ListSignal}
-	 * labeled alternative in {@link HDL0Parser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void exitListSignal(HDL0Parser.ListSignalContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code And}
 	 * labeled alternative in {@link HDL0Parser#exp}.
 	 * @param ctx the parse tree
@@ -210,14 +198,4 @@ public interface HDL0Listener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitUpdate(HDL0Parser.UpdateContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link HDL0Parser#function_call}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunction_call(HDL0Parser.Function_callContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link HDL0Parser#function_call}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunction_call(HDL0Parser.Function_callContext ctx);
 }

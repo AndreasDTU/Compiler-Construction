@@ -15,6 +15,7 @@ DEFINITIONS: 'def:';
 UPDATES: 'updates:';
 SIMINPUTS: 'siminputs:';
 
+
 EQ: '=';
 LPAREN: '(';
 RPAREN: ')';
@@ -28,7 +29,8 @@ LONGCOMMENT: '/*' (~[*] | '*'~[/])* '*/' -> skip;
 
 // Parser Rules
 hdl0
-    : hardware inputs outputs latches? definitions? updates siminputs;
+    : hardware inputs outputs latches? definitions?
+    updates siminputs;
 
 hardware: 
     HARDWARE SIGNAL;
@@ -43,7 +45,7 @@ latches:
     LATCHES signal_list;
 
 definitions:
-    (definition)*;
+    (definition)+;
 
 updates:
     UPDATES (update)+;
@@ -61,17 +63,15 @@ siminput:
     SIGNAL EQ BOOLEAN+;
 
 // Expression Rules
-exp: NOT exp                                # Not
-    | (NOT SIGNAL)? SIGNAL (NOT SIGNAL)?    # ListSignal          
-    | exp AND exp                           # And
+exp: NOT exp                                # Not         
+    | exp AND? exp                          # And
     | exp OR exp                            # Or      
-    | function_call                         # Functioncall     
+    | SIGNAL LPAREN (exp (COMMA exp)*)? RPAREN                        # Functioncall     
     | LPAREN exp RPAREN                     # Paren
-    | SIGNAL*                               # Signal
+    | SIGNAL                               # Signal
     ;
 
 update:
     SIGNAL EQ exp;                          
 
-function_call
-    : SIGNAL LPAREN (exp (COMMA exp)*)? RPAREN; // Modified for optional comma-separated expressions
+

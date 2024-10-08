@@ -9,7 +9,7 @@ antlr4 = java -cp $(classpath) org.antlr.v4.Tool
 grun = java -cp $(classpath) org.antlr.v4.gui.TestRig
 SRCFILES = main.java
 GENERATED = HDL0Listener.java HDL0BaseListener.java HDL0Parser.java HDL0Lexer.java
-
+INPUT_FILE = 01-hello-world.hw
 all:	
 	make grun
 
@@ -31,9 +31,9 @@ run:	main.class
 
 clean:
 	@echo "Cleaning up..."
-	find "$(GEN_DIR)" -type f -name '*.interp' -delete
-	find "$(GEN_DIR)" -type f -name '*.tokens' -delete
-	find "$(GEN_DIR)" -type f -name '*.class' -delete
-	find "$(SRC_DIR)" -type f -name '*.class' -delete
+	find -type f -name '*.interp' -delete
+	find -type f -name '*.tokens' -delete
+	find -type f -name '*.class' -delete
+	find -type f -name '*.class' -delete
 	-rm -f "$(OUTPUT_FILE)"
 
