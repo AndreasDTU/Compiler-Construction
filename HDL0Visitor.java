@@ -1,5 +1,4 @@
 // Generated from HDL0.g4 by ANTLR 4.13.2
-package src;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -77,11 +76,54 @@ public interface HDL0Visitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSiminput(HDL0Parser.SiminputContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link HDL0Parser#exp}.
+	 * Visit a parse tree produced by the {@code Not}
+	 * labeled alternative in {@link HDL0Parser#exp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExp(HDL0Parser.ExpContext ctx);
+	T visitNot(HDL0Parser.NotContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Signal}
+	 * labeled alternative in {@link HDL0Parser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSignal(HDL0Parser.SignalContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Or}
+	 * labeled alternative in {@link HDL0Parser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOr(HDL0Parser.OrContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ListSignal}
+	 * labeled alternative in {@link HDL0Parser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListSignal(HDL0Parser.ListSignalContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code And}
+	 * labeled alternative in {@link HDL0Parser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnd(HDL0Parser.AndContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Functioncall}
+	 * labeled alternative in {@link HDL0Parser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctioncall(HDL0Parser.FunctioncallContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Paren}
+	 * labeled alternative in {@link HDL0Parser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParen(HDL0Parser.ParenContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link HDL0Parser#update}.
 	 * @param ctx the parse tree

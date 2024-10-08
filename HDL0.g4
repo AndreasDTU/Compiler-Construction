@@ -23,11 +23,10 @@ AND: '*';
 OR: '+';
 NOT: '/';
 
-COMMENT : '//' ~[\n]* -> skip;
-LONGCOMMENT : '/*' (~[*] | '*'~[/])* '*/' -> skip;
+COMMENT: '//' ~[\n]* -> skip;
+LONGCOMMENT: '/*' (~[*] | '*'~[/])* '*/' -> skip;
 
 // Parser Rules
-
 hdl0
     : hardware inputs outputs latches? definitions? updates siminputs;
 
@@ -40,7 +39,7 @@ inputs:
 outputs: 
     OUTPUTS signal_list;
 
-latches :
+latches:
     LATCHES signal_list;
 
 definitions:
@@ -53,28 +52,26 @@ siminputs:
     SIMINPUTS (siminput+);
 
 signal_list:
-    SIGNAL (SIGNAL)*;
+    SIGNAL (SIGNAL)*; // Signal list can contain multiple SIGNALS
 
 definition:
-    DEFINITIONS SIGNAL LPAREN (',' | signal_list)*  RPAREN EQ exp;
-
-
+    DEFINITIONS SIGNAL LPAREN (signal_list (COMMA signal_list)*)? RPAREN EQ exp;
 
 siminput:
     SIGNAL EQ BOOLEAN+;
 
 // Expression Rules
-exp:  NOT exp
-    | (NOT SIGNAL)? SIGNAL (NOT SIGNAL)?            
-    | exp AND exp
-    | exp OR exp           
-    | function_call         
-    | LPAREN exp RPAREN     
-    | SIGNAL*               
+exp: NOT exp                                # Not
+    | (NOT SIGNAL)? SIGNAL (NOT SIGNAL)?    # ListSignal          
+    | exp AND exp                           # And
+    | exp OR exp                            # Or      
+    | function_call                         # Functioncall     
+    | LPAREN exp RPAREN                     # Paren
+    | SIGNAL*                               # Signal
     ;
 
 update:
-    SIGNAL EQ exp;
+    SIGNAL EQ exp;                          
 
 function_call
-    : SIGNAL LPAREN exp (COMMA exp)* RPAREN;
+    : SIGNAL LPAREN (exp (COMMA exp)*)? RPAREN; // Modified for optional comma-separated expressions

@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Java Program",
+            "request": "launch",
+            "mainClass": "main",
+            "vmArgs": "-cp .:antlr-4.13.2-complete.jar",   // For Linux/macOS
+            // "vmArgs": "-cp .;antlr-4.13.2-complete.jar", // For Windows
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
