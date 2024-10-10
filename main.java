@@ -71,24 +71,49 @@ class PrettyPrintVisitor extends HDL0BaseVisitor<String> {
         return html.toString();
     }
 
+    
     @Override
     public String visitInputs(HDL0Parser.InputsContext ctx) {
         StringBuilder inputs = new StringBuilder();
-        inputs.append(ctx.signal_list().getText()).append("<br>");
+        HDL0Parser.Signal_listContext signalList = ctx.signal_list();
+        for (int i = 0; i < signalList.SIGNAL().size(); i++) {
+            inputs.append(signalList.SIGNAL(i).getText());
+            if (i < signalList.SIGNAL().size() - 1) {
+                inputs.append(" "); // Adds a space after if it is not the last one
+            }
+        }
+        
+        inputs.append("<br>");
         return inputs.toString();
     }
-
+    
     @Override
     public String visitOutputs(HDL0Parser.OutputsContext ctx) {
         StringBuilder outputs = new StringBuilder();
-        outputs.append(ctx.signal_list().getText()).append("<br>");
+        HDL0Parser.Signal_listContext signalList = ctx.signal_list();
+        for (int i = 0; i < signalList.SIGNAL().size(); i++) {
+            outputs.append(signalList.SIGNAL(i).getText());
+            if (i < signalList.SIGNAL().size() - 1) {
+                outputs.append(" "); // Adds a space after if it is not the last one
+            }
+        }
+        
+        outputs.append("<br>");
         return outputs.toString();
     }
 
     @Override
     public String visitLatches(HDL0Parser.LatchesContext ctx) {
         StringBuilder latches = new StringBuilder();
-        latches.append(ctx.signal_list().getText()).append("<br>");
+        HDL0Parser.Signal_listContext signalList = ctx.signal_list();
+        for (int i = 0; i < signalList.SIGNAL().size(); i++) {
+            latches.append(signalList.SIGNAL(i).getText());
+            if (i < signalList.SIGNAL().size() - 1) {
+                latches.append(" "); // Adds a space after if it is not the last one
+            }
+        }
+        
+        latches.append("<br>");
         return latches.toString();
     }
 
@@ -148,15 +173,13 @@ class PrettyPrintVisitor extends HDL0BaseVisitor<String> {
 
     @Override
     public String visitSignal(HDL0Parser.SignalContext ctx) { 
-        return "\\mathrm{" + ctx.SIGNAL().getText() + "}"; // Only apply \mathrm to the signal itself
+        return ctx.SIGNAL().getText(); // Only apply \mathrm to the signal itself
     }
 
 
     @Override
     public String visitOr(HDL0Parser.OrContext ctx) { 
-        StringBuilder Or = new StringBuilder();
-        Or.append("(").append(visit(ctx.exp(0))).append(" \\vee ").append(visit(ctx.exp(1))).append(")");
-        return Or.toString();
+        return "(" + visit(ctx.exp(0)) + " \\vee " + visit(ctx.exp(1)) + ")"; 
     }
     @Override
     public String visitSignal_list(HDL0Parser.Signal_listContext ctx) {
@@ -188,7 +211,7 @@ class PrettyPrintVisitor extends HDL0BaseVisitor<String> {
     @Override
     public String visitParen(HDL0Parser.ParenContext ctx) { 
         StringBuilder Paren = new StringBuilder();
-        Paren.append("\\(").append(visit(ctx.exp())).append("\\)"); // Call visit on inner expression
+        Paren.append("(").append(visit(ctx.exp())).append(")"); // Call visit on inner expression
         return Paren.toString();
     }
 }

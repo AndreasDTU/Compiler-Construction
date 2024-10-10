@@ -9,7 +9,7 @@ antlr4 = java -cp $(classpath) org.antlr.v4.Tool
 grun = java -cp $(classpath) org.antlr.v4.gui.TestRig
 SRCFILES = main.java
 GENERATED = HDL0Listener.java HDL0BaseListener.java HDL0Parser.java HDL0Lexer.java
-INPUT_FILE = 03-trafiklys.hw
+INPUT_FILE = 04-von-Neumann.hw
 all:	
 	make grun
 
