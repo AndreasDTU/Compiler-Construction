@@ -1,9 +1,9 @@
 antlrjar = antlr-4.13.2-complete.jar
 
 ###### FOR LINUX AND MAC -- uncomment the following line if you do not use Windows:
-classpath = '$(antlrjar):.'
+#classpath = '$(antlrjar):.'
 ###### FOR WINDOWS -- comment the following line if you do not use Windows:
-#classpath = '$(antlrjar);.'
+classpath = '$(antlrjar);.'
 
 antlr4 = java -cp $(classpath) org.antlr.v4.Tool
 grun = java -cp $(classpath) org.antlr.v4.gui.TestRig
@@ -20,7 +20,7 @@ HDL0Lexer.class:	HDL0Lexer.java
 	javac -cp $(classpath) $(GENERATED)
 
 grun:	HDL0Lexer.class $(INPUT_FILE)
-	$(grun) HDL0 start -gui -tokens $(INPUT_FILE)
+	$(grun) HDL0 hdl0 -gui -tokens $(INPUT_FILE)
 
 main.class:	HDL0Lexer.java main.java
 	javac -cp $(classpath) $(GENERATED) main.java

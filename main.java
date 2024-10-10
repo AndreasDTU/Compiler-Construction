@@ -26,7 +26,7 @@ public class main {
         HDL0Parser parser = new HDL0Parser(tokens);
         
         // and parse anything from the grammar for "start"
-        ParseTree parseTree = parser.hdl0();
+        ParseTree parseTree = parser.hardware();
 
         // Pretty print the result
         PrettyPrintVisitor prettyPrinter = new PrettyPrintVisitor();
