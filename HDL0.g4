@@ -5,8 +5,6 @@ BOOLEAN: '0' | '1';
 WHITESPACE: [ \t\r\n]+ -> skip;
 fragment IDENT: [a-zA-Z][a-zA-Z0-9]*;
 SIGNAL: IDENT '\''?; 
-COMMENT : '//' ~[\n]* -> skip;
-LONGCOMMENT : '/*' (~[*] | '*'~[/])* '*/' -> skip;
 
 // Keywords and Symbols as Lexer Tokens
 HARDWARE: 'hardware:';
@@ -17,6 +15,7 @@ DEFINITIONS: 'def:';
 UPDATES: 'updates:';
 SIMINPUTS: 'siminputs:';
 
+
 EQ: '=';
 LPAREN: '(';
 RPAREN: ')';
@@ -25,11 +24,12 @@ AND: '*';
 OR: '+';
 NOT: '/';
 
+COMMENT: '//' ~[\n]* -> skip;
+LONGCOMMENT: '/*' (~[*] | '*'~[/])* '*/' -> skip;
 
 // Parser Rules
-
 hdl0
-    : hardware inputs outputs latches? definitions? updates siminputs;
+    : hardware inputs outputs latches? definitions updates siminputs;
 
 hardware: 
     HARDWARE SIGNAL;
@@ -40,7 +40,7 @@ inputs:
 outputs: 
     OUTPUTS signal_list;
 
-latches :
+latches:
     LATCHES signal_list;
 
 definitions:
@@ -53,28 +53,24 @@ siminputs:
     SIMINPUTS (siminput+);
 
 signal_list:
-    SIGNAL (SIGNAL)*;
+    SIGNAL (SIGNAL)*; // Signal list can contain multiple SIGNALS
 
 definition:
-    DEFINITIONS SIGNAL LPAREN (',' | signal_list)*  RPAREN EQ exp;
-
-
+    DEFINITIONS SIGNAL LPAREN (signal_list (COMMA signal_list)*)? RPAREN EQ exp;
 
 siminput:
     SIGNAL EQ BOOLEAN+;
 
 // Expression Rules
-exp:  NOT exp
-    | (NOT SIGNAL)? SIGNAL (NOT SIGNAL)?            
-    | exp AND exp
-    | exp OR exp           
-    | function_call         
-    | LPAREN exp RPAREN     
-    | SIGNAL*               
+exp: NOT exp                                # Not         
+    | exp AND? exp                          # And
+    | exp OR exp                            # Or      
+    | SIGNAL LPAREN (exp (COMMA exp)*)? RPAREN                        # Functioncall     
+    | LPAREN exp RPAREN                     # Paren
+    | SIGNAL                               # Signal
     ;
 
 update:
-    SIGNAL EQ exp;
+    SIGNAL EQ exp;                          
 
-function_call
-    : SIGNAL LPAREN exp (COMMA exp)* RPAREN;
+

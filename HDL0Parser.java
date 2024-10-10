@@ -22,13 +22,11 @@ public class HDL0Parser extends Parser {
 	public static final int
 		RULE_hdl0 = 0, RULE_hardware = 1, RULE_inputs = 2, RULE_outputs = 3, RULE_latches = 4, 
 		RULE_definitions = 5, RULE_updates = 6, RULE_siminputs = 7, RULE_signal_list = 8, 
-		RULE_definition = 9, RULE_siminput = 10, RULE_exp = 11, RULE_update = 12, 
-		RULE_function_call = 13;
+		RULE_definition = 9, RULE_siminput = 10, RULE_exp = 11, RULE_update = 12;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"hdl0", "hardware", "inputs", "outputs", "latches", "definitions", "updates", 
-			"siminputs", "signal_list", "definition", "siminput", "exp", "update", 
-			"function_call"
+			"siminputs", "signal_list", "definition", "siminput", "exp", "update"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -110,6 +108,9 @@ public class HDL0Parser extends Parser {
 		public OutputsContext outputs() {
 			return getRuleContext(OutputsContext.class,0);
 		}
+		public DefinitionsContext definitions() {
+			return getRuleContext(DefinitionsContext.class,0);
+		}
 		public UpdatesContext updates() {
 			return getRuleContext(UpdatesContext.class,0);
 		}
@@ -118,9 +119,6 @@ public class HDL0Parser extends Parser {
 		}
 		public LatchesContext latches() {
 			return getRuleContext(LatchesContext.class,0);
-		}
-		public DefinitionsContext definitions() {
-			return getRuleContext(DefinitionsContext.class,0);
 		}
 		public Hdl0Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -134,6 +132,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitHdl0(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitHdl0(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Hdl0Context hdl0() throws RecognitionException {
@@ -143,35 +146,27 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(28);
+			setState(26);
 			hardware();
-			setState(29);
+			setState(27);
 			inputs();
-			setState(30);
+			setState(28);
 			outputs();
-			setState(32);
+			setState(30);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==LATCHES) {
 				{
-				setState(31);
+				setState(29);
 				latches();
 				}
 			}
 
-			setState(35);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
-			case 1:
-				{
-				setState(34);
-				definitions();
-				}
-				break;
-			}
-			setState(37);
+			setState(32);
+			definitions();
+			setState(33);
 			updates();
-			setState(38);
+			setState(34);
 			siminputs();
 			}
 		}
@@ -202,6 +197,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitHardware(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitHardware(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final HardwareContext hardware() throws RecognitionException {
@@ -210,9 +210,9 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(40);
+			setState(36);
 			match(HARDWARE);
-			setState(41);
+			setState(37);
 			match(SIGNAL);
 			}
 		}
@@ -245,6 +245,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitInputs(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitInputs(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final InputsContext inputs() throws RecognitionException {
@@ -253,9 +258,9 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(43);
+			setState(39);
 			match(INPUTS);
-			setState(44);
+			setState(40);
 			signal_list();
 			}
 		}
@@ -288,6 +293,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitOutputs(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitOutputs(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final OutputsContext outputs() throws RecognitionException {
@@ -296,9 +306,9 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(46);
+			setState(42);
 			match(OUTPUTS);
-			setState(47);
+			setState(43);
 			signal_list();
 			}
 		}
@@ -331,6 +341,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitLatches(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitLatches(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LatchesContext latches() throws RecognitionException {
@@ -339,9 +354,9 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(49);
+			setState(45);
 			match(LATCHES);
-			setState(50);
+			setState(46);
 			signal_list();
 			}
 		}
@@ -376,6 +391,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitDefinitions(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitDefinitions(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DefinitionsContext definitions() throws RecognitionException {
@@ -385,17 +405,17 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(55);
+			setState(51);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==DEFINITIONS) {
 				{
 				{
-				setState(52);
+				setState(48);
 				definition();
 				}
 				}
-				setState(57);
+				setState(53);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -433,6 +453,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitUpdates(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitUpdates(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final UpdatesContext updates() throws RecognitionException {
@@ -442,19 +467,19 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(58);
+			setState(54);
 			match(UPDATES);
-			setState(60); 
+			setState(56); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(59);
+				setState(55);
 				update();
 				}
 				}
-				setState(62); 
+				setState(58); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==SIGNAL );
@@ -492,6 +517,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitSiminputs(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitSiminputs(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final SiminputsContext siminputs() throws RecognitionException {
@@ -501,20 +531,20 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(64);
+			setState(60);
 			match(SIMINPUTS);
 			{
-			setState(66); 
+			setState(62); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(65);
+				setState(61);
 				siminput();
 				}
 				}
-				setState(68); 
+				setState(64); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==SIGNAL );
@@ -550,32 +580,35 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitSignal_list(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitSignal_list(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Signal_listContext signal_list() throws RecognitionException {
 		Signal_listContext _localctx = new Signal_listContext(_ctx, getState());
 		enterRule(_localctx, 16, RULE_signal_list);
+		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(70);
+			setState(66);
 			match(SIGNAL);
-			setState(74);
+			setState(70);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
-			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					{
-					{
-					setState(71);
-					match(SIGNAL);
-					}
-					} 
+			_la = _input.LA(1);
+			while (_la==SIGNAL) {
+				{
+				{
+				setState(67);
+				match(SIGNAL);
 				}
-				setState(76);
+				}
+				setState(72);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
+				_la = _input.LA(1);
 			}
 			}
 		}
@@ -600,15 +633,15 @@ public class HDL0Parser extends Parser {
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
-		public List<TerminalNode> COMMA() { return getTokens(HDL0Parser.COMMA); }
-		public TerminalNode COMMA(int i) {
-			return getToken(HDL0Parser.COMMA, i);
-		}
 		public List<Signal_listContext> signal_list() {
 			return getRuleContexts(Signal_listContext.class);
 		}
 		public Signal_listContext signal_list(int i) {
 			return getRuleContext(Signal_listContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(HDL0Parser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(HDL0Parser.COMMA, i);
 		}
 		public DefinitionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -622,6 +655,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitDefinition(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitDefinition(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DefinitionContext definition() throws RecognitionException {
@@ -631,45 +669,43 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(77);
+			setState(73);
 			match(DEFINITIONS);
-			setState(78);
+			setState(74);
 			match(SIGNAL);
-			setState(79);
+			setState(75);
 			match(LPAREN);
 			setState(84);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==SIGNAL || _la==COMMA) {
+			if (_la==SIGNAL) {
 				{
-				setState(82);
-				_errHandler.sync(this);
-				switch (_input.LA(1)) {
-				case COMMA:
-					{
-					setState(80);
-					match(COMMA);
-					}
-					break;
-				case SIGNAL:
-					{
-					setState(81);
-					signal_list();
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
-				}
-				}
-				setState(86);
+				setState(76);
+				signal_list();
+				setState(81);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
+				while (_la==COMMA) {
+					{
+					{
+					setState(77);
+					match(COMMA);
+					setState(78);
+					signal_list();
+					}
+					}
+					setState(83);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				}
+				}
 			}
-			setState(87);
+
+			setState(86);
 			match(RPAREN);
-			setState(88);
+			setState(87);
 			match(EQ);
-			setState(89);
+			setState(88);
 			exp(0);
 			}
 		}
@@ -704,6 +740,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitSiminput(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitSiminput(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final SiminputContext siminput() throws RecognitionException {
@@ -713,21 +754,21 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(91);
+			setState(90);
 			match(SIGNAL);
-			setState(92);
+			setState(91);
 			match(EQ);
-			setState(94); 
+			setState(93); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(93);
+				setState(92);
 				match(BOOLEAN);
 				}
 				}
-				setState(96); 
+				setState(95); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==BOOLEAN );
@@ -746,38 +787,153 @@ public class HDL0Parser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ExpContext extends ParserRuleContext {
-		public List<TerminalNode> NOT() { return getTokens(HDL0Parser.NOT); }
-		public TerminalNode NOT(int i) {
-			return getToken(HDL0Parser.NOT, i);
+		public ExpContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
 		}
+		@Override public int getRuleIndex() { return RULE_exp; }
+	 
+		public ExpContext() { }
+		public void copyFrom(ExpContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class NotContext extends ExpContext {
+		public TerminalNode NOT() { return getToken(HDL0Parser.NOT, 0); }
+		public ExpContext exp() {
+			return getRuleContext(ExpContext.class,0);
+		}
+		public NotContext(ExpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterNot(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitNot(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitNot(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class SignalContext extends ExpContext {
+		public TerminalNode SIGNAL() { return getToken(HDL0Parser.SIGNAL, 0); }
+		public SignalContext(ExpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterSignal(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitSignal(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitSignal(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class OrContext extends ExpContext {
 		public List<ExpContext> exp() {
 			return getRuleContexts(ExpContext.class);
 		}
 		public ExpContext exp(int i) {
 			return getRuleContext(ExpContext.class,i);
 		}
-		public List<TerminalNode> SIGNAL() { return getTokens(HDL0Parser.SIGNAL); }
-		public TerminalNode SIGNAL(int i) {
-			return getToken(HDL0Parser.SIGNAL, i);
-		}
-		public Function_callContext function_call() {
-			return getRuleContext(Function_callContext.class,0);
-		}
-		public TerminalNode LPAREN() { return getToken(HDL0Parser.LPAREN, 0); }
-		public TerminalNode RPAREN() { return getToken(HDL0Parser.RPAREN, 0); }
-		public TerminalNode AND() { return getToken(HDL0Parser.AND, 0); }
 		public TerminalNode OR() { return getToken(HDL0Parser.OR, 0); }
-		public ExpContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_exp; }
+		public OrContext(ExpContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterExp(this);
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterOr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitExp(this);
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitOr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitOr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class AndContext extends ExpContext {
+		public List<ExpContext> exp() {
+			return getRuleContexts(ExpContext.class);
+		}
+		public ExpContext exp(int i) {
+			return getRuleContext(ExpContext.class,i);
+		}
+		public TerminalNode AND() { return getToken(HDL0Parser.AND, 0); }
+		public AndContext(ExpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterAnd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitAnd(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitAnd(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class FunctioncallContext extends ExpContext {
+		public TerminalNode SIGNAL() { return getToken(HDL0Parser.SIGNAL, 0); }
+		public TerminalNode LPAREN() { return getToken(HDL0Parser.LPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(HDL0Parser.RPAREN, 0); }
+		public List<ExpContext> exp() {
+			return getRuleContexts(ExpContext.class);
+		}
+		public ExpContext exp(int i) {
+			return getRuleContext(ExpContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(HDL0Parser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(HDL0Parser.COMMA, i);
+		}
+		public FunctioncallContext(ExpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterFunctioncall(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitFunctioncall(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitFunctioncall(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class ParenContext extends ExpContext {
+		public TerminalNode LPAREN() { return getToken(HDL0Parser.LPAREN, 0); }
+		public ExpContext exp() {
+			return getRuleContext(ExpContext.class,0);
+		}
+		public TerminalNode RPAREN() { return getToken(HDL0Parser.RPAREN, 0); }
+		public ParenContext(ExpContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterParen(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitParen(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitParen(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -797,126 +953,133 @@ public class HDL0Parser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(121);
+			setState(118);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
 			case 1:
 				{
-				setState(99);
+				_localctx = new NotContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+
+				setState(98);
 				match(NOT);
-				setState(100);
-				exp(7);
+				setState(99);
+				exp(6);
 				}
 				break;
 			case 2:
 				{
-				setState(103);
+				_localctx = new FunctioncallContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(100);
+				match(SIGNAL);
+				setState(101);
+				match(LPAREN);
+				setState(110);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==NOT) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 135176L) != 0)) {
 					{
-					setState(101);
-					match(NOT);
 					setState(102);
-					match(SIGNAL);
+					exp(0);
+					setState(107);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+					while (_la==COMMA) {
+						{
+						{
+						setState(103);
+						match(COMMA);
+						setState(104);
+						exp(0);
+						}
+						}
+						setState(109);
+						_errHandler.sync(this);
+						_la = _input.LA(1);
+					}
 					}
 				}
 
-				setState(105);
-				match(SIGNAL);
-				setState(108);
-				_errHandler.sync(this);
-				switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
-				case 1:
-					{
-					setState(106);
-					match(NOT);
-					setState(107);
-					match(SIGNAL);
-					}
-					break;
-				}
+				setState(112);
+				match(RPAREN);
 				}
 				break;
 			case 3:
 				{
-				setState(110);
-				function_call();
+				_localctx = new ParenContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(113);
+				match(LPAREN);
+				setState(114);
+				exp(0);
+				setState(115);
+				match(RPAREN);
 				}
 				break;
 			case 4:
 				{
-				setState(111);
-				match(LPAREN);
-				setState(112);
-				exp(0);
-				setState(113);
-				match(RPAREN);
-				}
-				break;
-			case 5:
-				{
-				setState(118);
-				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
-				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
-					if ( _alt==1 ) {
-						{
-						{
-						setState(115);
-						match(SIGNAL);
-						}
-						} 
-					}
-					setState(120);
-					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,11,_ctx);
-				}
+				_localctx = new SignalContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(117);
+				match(SIGNAL);
 				}
 				break;
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(131);
+			setState(130);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(129);
+					setState(128);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 					case 1:
 						{
-						_localctx = new ExpContext(_parentctx, _parentState);
+						_localctx = new AndContext(new ExpContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
-						setState(123);
+						setState(120);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
+						setState(122);
+						_errHandler.sync(this);
+						_la = _input.LA(1);
+						if (_la==AND) {
+							{
+							setState(121);
+							match(AND);
+							}
+						}
+
 						setState(124);
-						match(AND);
-						setState(125);
 						exp(6);
 						}
 						break;
 					case 2:
 						{
-						_localctx = new ExpContext(_parentctx, _parentState);
+						_localctx = new OrContext(new ExpContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
-						setState(126);
+						setState(125);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(127);
+						setState(126);
 						match(OR);
-						setState(128);
+						setState(127);
 						exp(5);
 						}
 						break;
 					}
 					} 
 				}
-				setState(133);
+				setState(132);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,14,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,13,_ctx);
 			}
 			}
 		}
@@ -950,6 +1113,11 @@ public class HDL0Parser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitUpdate(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof HDL0Visitor ) return ((HDL0Visitor<? extends T>)visitor).visitUpdate(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final UpdateContext update() throws RecognitionException {
@@ -958,85 +1126,12 @@ public class HDL0Parser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
+			setState(133);
+			match(SIGNAL);
 			setState(134);
-			match(SIGNAL);
-			setState(135);
 			match(EQ);
-			setState(136);
+			setState(135);
 			exp(0);
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class Function_callContext extends ParserRuleContext {
-		public TerminalNode SIGNAL() { return getToken(HDL0Parser.SIGNAL, 0); }
-		public TerminalNode LPAREN() { return getToken(HDL0Parser.LPAREN, 0); }
-		public List<ExpContext> exp() {
-			return getRuleContexts(ExpContext.class);
-		}
-		public ExpContext exp(int i) {
-			return getRuleContext(ExpContext.class,i);
-		}
-		public TerminalNode RPAREN() { return getToken(HDL0Parser.RPAREN, 0); }
-		public List<TerminalNode> COMMA() { return getTokens(HDL0Parser.COMMA); }
-		public TerminalNode COMMA(int i) {
-			return getToken(HDL0Parser.COMMA, i);
-		}
-		public Function_callContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_function_call; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).enterFunction_call(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HDL0Listener ) ((HDL0Listener)listener).exitFunction_call(this);
-		}
-	}
-
-	public final Function_callContext function_call() throws RecognitionException {
-		Function_callContext _localctx = new Function_callContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_function_call);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(138);
-			match(SIGNAL);
-			setState(139);
-			match(LPAREN);
-			setState(140);
-			exp(0);
-			setState(145);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while (_la==COMMA) {
-				{
-				{
-				setState(141);
-				match(COMMA);
-				setState(142);
-				exp(0);
-				}
-				}
-				setState(147);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-			}
-			setState(148);
-			match(RPAREN);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1068,91 +1163,82 @@ public class HDL0Parser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0013\u0097\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
+		"\u0004\u0001\u0013\u008a\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
 		"\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004"+
 		"\u0002\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007"+
 		"\u0002\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b"+
-		"\u0002\f\u0007\f\u0002\r\u0007\r\u0001\u0000\u0001\u0000\u0001\u0000\u0001"+
-		"\u0000\u0003\u0000!\b\u0000\u0001\u0000\u0003\u0000$\b\u0000\u0001\u0000"+
-		"\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0002"+
-		"\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0001\u0005\u0005\u00056\b\u0005\n\u0005\f\u0005"+
-		"9\t\u0005\u0001\u0006\u0001\u0006\u0004\u0006=\b\u0006\u000b\u0006\f\u0006"+
-		">\u0001\u0007\u0001\u0007\u0004\u0007C\b\u0007\u000b\u0007\f\u0007D\u0001"+
-		"\b\u0001\b\u0005\bI\b\b\n\b\f\bL\t\b\u0001\t\u0001\t\u0001\t\u0001\t\u0001"+
-		"\t\u0005\tS\b\t\n\t\f\tV\t\t\u0001\t\u0001\t\u0001\t\u0001\t\u0001\n\u0001"+
-		"\n\u0001\n\u0004\n_\b\n\u000b\n\f\n`\u0001\u000b\u0001\u000b\u0001\u000b"+
-		"\u0001\u000b\u0001\u000b\u0003\u000bh\b\u000b\u0001\u000b\u0001\u000b"+
-		"\u0001\u000b\u0003\u000bm\b\u000b\u0001\u000b\u0001\u000b\u0001\u000b"+
-		"\u0001\u000b\u0001\u000b\u0001\u000b\u0005\u000bu\b\u000b\n\u000b\f\u000b"+
-		"x\t\u000b\u0003\u000bz\b\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001"+
-		"\u000b\u0001\u000b\u0001\u000b\u0005\u000b\u0082\b\u000b\n\u000b\f\u000b"+
-		"\u0085\t\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0001\r\u0001\r\u0001\r"+
-		"\u0001\r\u0001\r\u0005\r\u0090\b\r\n\r\f\r\u0093\t\r\u0001\r\u0001\r\u0001"+
-		"\r\u0000\u0001\u0016\u000e\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012"+
-		"\u0014\u0016\u0018\u001a\u0000\u0000\u009b\u0000\u001c\u0001\u0000\u0000"+
-		"\u0000\u0002(\u0001\u0000\u0000\u0000\u0004+\u0001\u0000\u0000\u0000\u0006"+
-		".\u0001\u0000\u0000\u0000\b1\u0001\u0000\u0000\u0000\n7\u0001\u0000\u0000"+
-		"\u0000\f:\u0001\u0000\u0000\u0000\u000e@\u0001\u0000\u0000\u0000\u0010"+
-		"F\u0001\u0000\u0000\u0000\u0012M\u0001\u0000\u0000\u0000\u0014[\u0001"+
-		"\u0000\u0000\u0000\u0016y\u0001\u0000\u0000\u0000\u0018\u0086\u0001\u0000"+
-		"\u0000\u0000\u001a\u008a\u0001\u0000\u0000\u0000\u001c\u001d\u0003\u0002"+
-		"\u0001\u0000\u001d\u001e\u0003\u0004\u0002\u0000\u001e \u0003\u0006\u0003"+
-		"\u0000\u001f!\u0003\b\u0004\u0000 \u001f\u0001\u0000\u0000\u0000 !\u0001"+
-		"\u0000\u0000\u0000!#\u0001\u0000\u0000\u0000\"$\u0003\n\u0005\u0000#\""+
-		"\u0001\u0000\u0000\u0000#$\u0001\u0000\u0000\u0000$%\u0001\u0000\u0000"+
-		"\u0000%&\u0003\f\u0006\u0000&\'\u0003\u000e\u0007\u0000\'\u0001\u0001"+
-		"\u0000\u0000\u0000()\u0005\u0004\u0000\u0000)*\u0005\u0003\u0000\u0000"+
-		"*\u0003\u0001\u0000\u0000\u0000+,\u0005\u0005\u0000\u0000,-\u0003\u0010"+
-		"\b\u0000-\u0005\u0001\u0000\u0000\u0000./\u0005\u0006\u0000\u0000/0\u0003"+
-		"\u0010\b\u00000\u0007\u0001\u0000\u0000\u000012\u0005\u0007\u0000\u0000"+
-		"23\u0003\u0010\b\u00003\t\u0001\u0000\u0000\u000046\u0003\u0012\t\u0000"+
-		"54\u0001\u0000\u0000\u000069\u0001\u0000\u0000\u000075\u0001\u0000\u0000"+
-		"\u000078\u0001\u0000\u0000\u00008\u000b\u0001\u0000\u0000\u000097\u0001"+
-		"\u0000\u0000\u0000:<\u0005\t\u0000\u0000;=\u0003\u0018\f\u0000<;\u0001"+
-		"\u0000\u0000\u0000=>\u0001\u0000\u0000\u0000><\u0001\u0000\u0000\u0000"+
-		">?\u0001\u0000\u0000\u0000?\r\u0001\u0000\u0000\u0000@B\u0005\n\u0000"+
-		"\u0000AC\u0003\u0014\n\u0000BA\u0001\u0000\u0000\u0000CD\u0001\u0000\u0000"+
-		"\u0000DB\u0001\u0000\u0000\u0000DE\u0001\u0000\u0000\u0000E\u000f\u0001"+
-		"\u0000\u0000\u0000FJ\u0005\u0003\u0000\u0000GI\u0005\u0003\u0000\u0000"+
-		"HG\u0001\u0000\u0000\u0000IL\u0001\u0000\u0000\u0000JH\u0001\u0000\u0000"+
-		"\u0000JK\u0001\u0000\u0000\u0000K\u0011\u0001\u0000\u0000\u0000LJ\u0001"+
-		"\u0000\u0000\u0000MN\u0005\b\u0000\u0000NO\u0005\u0003\u0000\u0000OT\u0005"+
-		"\f\u0000\u0000PS\u0005\u000e\u0000\u0000QS\u0003\u0010\b\u0000RP\u0001"+
-		"\u0000\u0000\u0000RQ\u0001\u0000\u0000\u0000SV\u0001\u0000\u0000\u0000"+
-		"TR\u0001\u0000\u0000\u0000TU\u0001\u0000\u0000\u0000UW\u0001\u0000\u0000"+
-		"\u0000VT\u0001\u0000\u0000\u0000WX\u0005\r\u0000\u0000XY\u0005\u000b\u0000"+
-		"\u0000YZ\u0003\u0016\u000b\u0000Z\u0013\u0001\u0000\u0000\u0000[\\\u0005"+
-		"\u0003\u0000\u0000\\^\u0005\u000b\u0000\u0000]_\u0005\u0001\u0000\u0000"+
-		"^]\u0001\u0000\u0000\u0000_`\u0001\u0000\u0000\u0000`^\u0001\u0000\u0000"+
-		"\u0000`a\u0001\u0000\u0000\u0000a\u0015\u0001\u0000\u0000\u0000bc\u0006"+
-		"\u000b\uffff\uffff\u0000cd\u0005\u0011\u0000\u0000dz\u0003\u0016\u000b"+
-		"\u0007ef\u0005\u0011\u0000\u0000fh\u0005\u0003\u0000\u0000ge\u0001\u0000"+
-		"\u0000\u0000gh\u0001\u0000\u0000\u0000hi\u0001\u0000\u0000\u0000il\u0005"+
-		"\u0003\u0000\u0000jk\u0005\u0011\u0000\u0000km\u0005\u0003\u0000\u0000"+
-		"lj\u0001\u0000\u0000\u0000lm\u0001\u0000\u0000\u0000mz\u0001\u0000\u0000"+
-		"\u0000nz\u0003\u001a\r\u0000op\u0005\f\u0000\u0000pq\u0003\u0016\u000b"+
-		"\u0000qr\u0005\r\u0000\u0000rz\u0001\u0000\u0000\u0000su\u0005\u0003\u0000"+
-		"\u0000ts\u0001\u0000\u0000\u0000ux\u0001\u0000\u0000\u0000vt\u0001\u0000"+
-		"\u0000\u0000vw\u0001\u0000\u0000\u0000wz\u0001\u0000\u0000\u0000xv\u0001"+
-		"\u0000\u0000\u0000yb\u0001\u0000\u0000\u0000yg\u0001\u0000\u0000\u0000"+
-		"yn\u0001\u0000\u0000\u0000yo\u0001\u0000\u0000\u0000yv\u0001\u0000\u0000"+
-		"\u0000z\u0083\u0001\u0000\u0000\u0000{|\n\u0005\u0000\u0000|}\u0005\u000f"+
-		"\u0000\u0000}\u0082\u0003\u0016\u000b\u0006~\u007f\n\u0004\u0000\u0000"+
-		"\u007f\u0080\u0005\u0010\u0000\u0000\u0080\u0082\u0003\u0016\u000b\u0005"+
-		"\u0081{\u0001\u0000\u0000\u0000\u0081~\u0001\u0000\u0000\u0000\u0082\u0085"+
-		"\u0001\u0000\u0000\u0000\u0083\u0081\u0001\u0000\u0000\u0000\u0083\u0084"+
-		"\u0001\u0000\u0000\u0000\u0084\u0017\u0001\u0000\u0000\u0000\u0085\u0083"+
-		"\u0001\u0000\u0000\u0000\u0086\u0087\u0005\u0003\u0000\u0000\u0087\u0088"+
-		"\u0005\u000b\u0000\u0000\u0088\u0089\u0003\u0016\u000b\u0000\u0089\u0019"+
-		"\u0001\u0000\u0000\u0000\u008a\u008b\u0005\u0003\u0000\u0000\u008b\u008c"+
-		"\u0005\f\u0000\u0000\u008c\u0091\u0003\u0016\u000b\u0000\u008d\u008e\u0005"+
-		"\u000e\u0000\u0000\u008e\u0090\u0003\u0016\u000b\u0000\u008f\u008d\u0001"+
-		"\u0000\u0000\u0000\u0090\u0093\u0001\u0000\u0000\u0000\u0091\u008f\u0001"+
-		"\u0000\u0000\u0000\u0091\u0092\u0001\u0000\u0000\u0000\u0092\u0094\u0001"+
-		"\u0000\u0000\u0000\u0093\u0091\u0001\u0000\u0000\u0000\u0094\u0095\u0005"+
-		"\r\u0000\u0000\u0095\u001b\u0001\u0000\u0000\u0000\u0010 #7>DJRT`glvy"+
-		"\u0081\u0083\u0091";
+		"\u0002\f\u0007\f\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0003"+
+		"\u0000\u001f\b\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001"+
+		"\u0003\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0004\u0001"+
+		"\u0005\u0005\u00052\b\u0005\n\u0005\f\u00055\t\u0005\u0001\u0006\u0001"+
+		"\u0006\u0004\u00069\b\u0006\u000b\u0006\f\u0006:\u0001\u0007\u0001\u0007"+
+		"\u0004\u0007?\b\u0007\u000b\u0007\f\u0007@\u0001\b\u0001\b\u0005\bE\b"+
+		"\b\n\b\f\bH\t\b\u0001\t\u0001\t\u0001\t\u0001\t\u0001\t\u0001\t\u0005"+
+		"\tP\b\t\n\t\f\tS\t\t\u0003\tU\b\t\u0001\t\u0001\t\u0001\t\u0001\t\u0001"+
+		"\n\u0001\n\u0001\n\u0004\n^\b\n\u000b\n\f\n_\u0001\u000b\u0001\u000b\u0001"+
+		"\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0005"+
+		"\u000bj\b\u000b\n\u000b\f\u000bm\t\u000b\u0003\u000bo\b\u000b\u0001\u000b"+
+		"\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0003\u000b"+
+		"w\b\u000b\u0001\u000b\u0001\u000b\u0003\u000b{\b\u000b\u0001\u000b\u0001"+
+		"\u000b\u0001\u000b\u0001\u000b\u0005\u000b\u0081\b\u000b\n\u000b\f\u000b"+
+		"\u0084\t\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0001\f\u0000\u0001\u0016"+
+		"\r\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u0000"+
+		"\u0000\u008c\u0000\u001a\u0001\u0000\u0000\u0000\u0002$\u0001\u0000\u0000"+
+		"\u0000\u0004\'\u0001\u0000\u0000\u0000\u0006*\u0001\u0000\u0000\u0000"+
+		"\b-\u0001\u0000\u0000\u0000\n3\u0001\u0000\u0000\u0000\f6\u0001\u0000"+
+		"\u0000\u0000\u000e<\u0001\u0000\u0000\u0000\u0010B\u0001\u0000\u0000\u0000"+
+		"\u0012I\u0001\u0000\u0000\u0000\u0014Z\u0001\u0000\u0000\u0000\u0016v"+
+		"\u0001\u0000\u0000\u0000\u0018\u0085\u0001\u0000\u0000\u0000\u001a\u001b"+
+		"\u0003\u0002\u0001\u0000\u001b\u001c\u0003\u0004\u0002\u0000\u001c\u001e"+
+		"\u0003\u0006\u0003\u0000\u001d\u001f\u0003\b\u0004\u0000\u001e\u001d\u0001"+
+		"\u0000\u0000\u0000\u001e\u001f\u0001\u0000\u0000\u0000\u001f \u0001\u0000"+
+		"\u0000\u0000 !\u0003\n\u0005\u0000!\"\u0003\f\u0006\u0000\"#\u0003\u000e"+
+		"\u0007\u0000#\u0001\u0001\u0000\u0000\u0000$%\u0005\u0004\u0000\u0000"+
+		"%&\u0005\u0003\u0000\u0000&\u0003\u0001\u0000\u0000\u0000\'(\u0005\u0005"+
+		"\u0000\u0000()\u0003\u0010\b\u0000)\u0005\u0001\u0000\u0000\u0000*+\u0005"+
+		"\u0006\u0000\u0000+,\u0003\u0010\b\u0000,\u0007\u0001\u0000\u0000\u0000"+
+		"-.\u0005\u0007\u0000\u0000./\u0003\u0010\b\u0000/\t\u0001\u0000\u0000"+
+		"\u000002\u0003\u0012\t\u000010\u0001\u0000\u0000\u000025\u0001\u0000\u0000"+
+		"\u000031\u0001\u0000\u0000\u000034\u0001\u0000\u0000\u00004\u000b\u0001"+
+		"\u0000\u0000\u000053\u0001\u0000\u0000\u000068\u0005\t\u0000\u000079\u0003"+
+		"\u0018\f\u000087\u0001\u0000\u0000\u00009:\u0001\u0000\u0000\u0000:8\u0001"+
+		"\u0000\u0000\u0000:;\u0001\u0000\u0000\u0000;\r\u0001\u0000\u0000\u0000"+
+		"<>\u0005\n\u0000\u0000=?\u0003\u0014\n\u0000>=\u0001\u0000\u0000\u0000"+
+		"?@\u0001\u0000\u0000\u0000@>\u0001\u0000\u0000\u0000@A\u0001\u0000\u0000"+
+		"\u0000A\u000f\u0001\u0000\u0000\u0000BF\u0005\u0003\u0000\u0000CE\u0005"+
+		"\u0003\u0000\u0000DC\u0001\u0000\u0000\u0000EH\u0001\u0000\u0000\u0000"+
+		"FD\u0001\u0000\u0000\u0000FG\u0001\u0000\u0000\u0000G\u0011\u0001\u0000"+
+		"\u0000\u0000HF\u0001\u0000\u0000\u0000IJ\u0005\b\u0000\u0000JK\u0005\u0003"+
+		"\u0000\u0000KT\u0005\f\u0000\u0000LQ\u0003\u0010\b\u0000MN\u0005\u000e"+
+		"\u0000\u0000NP\u0003\u0010\b\u0000OM\u0001\u0000\u0000\u0000PS\u0001\u0000"+
+		"\u0000\u0000QO\u0001\u0000\u0000\u0000QR\u0001\u0000\u0000\u0000RU\u0001"+
+		"\u0000\u0000\u0000SQ\u0001\u0000\u0000\u0000TL\u0001\u0000\u0000\u0000"+
+		"TU\u0001\u0000\u0000\u0000UV\u0001\u0000\u0000\u0000VW\u0005\r\u0000\u0000"+
+		"WX\u0005\u000b\u0000\u0000XY\u0003\u0016\u000b\u0000Y\u0013\u0001\u0000"+
+		"\u0000\u0000Z[\u0005\u0003\u0000\u0000[]\u0005\u000b\u0000\u0000\\^\u0005"+
+		"\u0001\u0000\u0000]\\\u0001\u0000\u0000\u0000^_\u0001\u0000\u0000\u0000"+
+		"_]\u0001\u0000\u0000\u0000_`\u0001\u0000\u0000\u0000`\u0015\u0001\u0000"+
+		"\u0000\u0000ab\u0006\u000b\uffff\uffff\u0000bc\u0005\u0011\u0000\u0000"+
+		"cw\u0003\u0016\u000b\u0006de\u0005\u0003\u0000\u0000en\u0005\f\u0000\u0000"+
+		"fk\u0003\u0016\u000b\u0000gh\u0005\u000e\u0000\u0000hj\u0003\u0016\u000b"+
+		"\u0000ig\u0001\u0000\u0000\u0000jm\u0001\u0000\u0000\u0000ki\u0001\u0000"+
+		"\u0000\u0000kl\u0001\u0000\u0000\u0000lo\u0001\u0000\u0000\u0000mk\u0001"+
+		"\u0000\u0000\u0000nf\u0001\u0000\u0000\u0000no\u0001\u0000\u0000\u0000"+
+		"op\u0001\u0000\u0000\u0000pw\u0005\r\u0000\u0000qr\u0005\f\u0000\u0000"+
+		"rs\u0003\u0016\u000b\u0000st\u0005\r\u0000\u0000tw\u0001\u0000\u0000\u0000"+
+		"uw\u0005\u0003\u0000\u0000va\u0001\u0000\u0000\u0000vd\u0001\u0000\u0000"+
+		"\u0000vq\u0001\u0000\u0000\u0000vu\u0001\u0000\u0000\u0000w\u0082\u0001"+
+		"\u0000\u0000\u0000xz\n\u0005\u0000\u0000y{\u0005\u000f\u0000\u0000zy\u0001"+
+		"\u0000\u0000\u0000z{\u0001\u0000\u0000\u0000{|\u0001\u0000\u0000\u0000"+
+		"|\u0081\u0003\u0016\u000b\u0006}~\n\u0004\u0000\u0000~\u007f\u0005\u0010"+
+		"\u0000\u0000\u007f\u0081\u0003\u0016\u000b\u0005\u0080x\u0001\u0000\u0000"+
+		"\u0000\u0080}\u0001\u0000\u0000\u0000\u0081\u0084\u0001\u0000\u0000\u0000"+
+		"\u0082\u0080\u0001\u0000\u0000\u0000\u0082\u0083\u0001\u0000\u0000\u0000"+
+		"\u0083\u0017\u0001\u0000\u0000\u0000\u0084\u0082\u0001\u0000\u0000\u0000"+
+		"\u0085\u0086\u0005\u0003\u0000\u0000\u0086\u0087\u0005\u000b\u0000\u0000"+
+		"\u0087\u0088\u0003\u0016\u000b\u0000\u0088\u0019\u0001\u0000\u0000\u0000"+
+		"\u000e\u001e3:@FQT_knvz\u0080\u0082";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
