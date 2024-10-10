@@ -29,8 +29,7 @@ LONGCOMMENT: '/*' (~[*] | '*'~[/])* '*/' -> skip;
 
 // Parser Rules
 hdl0
-    : hardware inputs outputs latches? definitions?
-    updates siminputs;
+    : hardware inputs outputs latches? definitions updates siminputs;
 
 hardware: 
     HARDWARE SIGNAL;
@@ -45,7 +44,7 @@ latches:
     LATCHES signal_list;
 
 definitions:
-    (definition)+;
+    (definition)*;
 
 updates:
     UPDATES (update)+;
