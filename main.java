@@ -124,17 +124,14 @@ class PrettyPrintVisitor extends HDL0BaseVisitor<String> {
             definitions.append("\\(\\mathit{").append(def.SIGNAL().getText()).append("}(");
     
             for (int i = 0; i < def.signal_list().size(); i++) {
-                definitions.append(def.signal_list(i).getText()); // Directly get the signal names
+                definitions.append(def.signal_list(i).getText()); 
                 if (i < def.signal_list().size() - 1) {
-                    definitions.append(", "); // Add comma between parameters
+                    definitions.append(", "); 
                 }
             }
     
             definitions.append(") = ");
-            
-            // Visit the expression part with LaTeX formatting (use \mathrm for signal names here)
-            definitions.append(visit(def.exp())); // Process the expression for the function body
-    
+            definitions.append(visit(def.exp()));
             definitions.append("\\)<br>");
         }
         return definitions.toString();
@@ -197,7 +194,6 @@ class PrettyPrintVisitor extends HDL0BaseVisitor<String> {
     public String visitFunctioncall(HDL0Parser.FunctioncallContext ctx) { 
         StringBuilder Functioncall = new StringBuilder();
         Functioncall.append("\\mathit{").append(ctx.SIGNAL().getText()).append("}(");
-        // Visit arguments if any, assuming there's a method for that
         for (int i = 0; i < ctx.exp().size(); i++) {
             Functioncall.append(visit(ctx.exp(i)));
             if (i < ctx.exp().size() - 1) {

@@ -9,7 +9,15 @@ antlr4 = java -cp $(classpath) org.antlr.v4.Tool
 grun = java -cp $(classpath) org.antlr.v4.gui.TestRig
 SRCFILES = main.java
 GENERATED = HDL0Listener.java HDL0BaseListener.java HDL0Parser.java HDL0Lexer.java
-INPUT_FILE = 04-von-Neumann.hw
+FILE1 = 01-hello-world.hw
+FILE2 = 01b-hello-world-withdef.hw
+FILE3 = 02-trafiklys-minimal.hw
+FILE4 = 03-trafiklys.hw
+FILE5 = 04-von-Neumann.hw
+
+
+
+
 all:	
 	make grun
 
@@ -19,14 +27,18 @@ HDL0Lexer.java:	HDL0.g4
 HDL0Lexer.class:	HDL0Lexer.java
 	javac -cp $(classpath) $(GENERATED)
 
-grun:	HDL0Lexer.class $(INPUT_FILE)
-	$(grun) HDL0 hdl0 -gui -tokens $(INPUT_FILE)
+grun:	HDL0Lexer.class $(FILE5)
+	$(grun) HDL0 hdl0 -gui -tokens $(FILE5)
 
 main.class:	HDL0Lexer.java main.java
 	javac -cp $(classpath) $(GENERATED) main.java
 
 run:	main.class
-	java -cp $(classpath) main $(INPUT_FILE)
+	java -cp $(classpath) main $(FILE1)
+	java -cp $(classpath) main $(FILE2)
+	java -cp $(classpath) main $(FILE3)
+	java -cp $(classpath) main $(FILE4)
+	java -cp $(classpath) main $(FILE5)
 
 
 clean:
