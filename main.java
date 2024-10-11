@@ -52,7 +52,7 @@ class PrettyPrintVisitor extends HDL0BaseVisitor<String> {
     @Override
     public String visitHdl0(HDL0Parser.Hdl0Context ctx) {
         StringBuilder html = new StringBuilder();
-        String title = ctx.hardware().SIGNAL().getText(); // Assuming hardware has the title
+        String title = ctx.hardware().SIGNAL().getText();
         html.append("<!DOCTYPE html>\n<html><head><title>").append(title).append("</title>")
             .append("<script src=\"https://polyfill.io/v3/polyfill.min.js?features=es6\"></script>")
             .append("<script type=\"text/javascript\" id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\"></script>")
@@ -193,7 +193,7 @@ class PrettyPrintVisitor extends HDL0BaseVisitor<String> {
     @Override
     public String visitFunctioncall(HDL0Parser.FunctioncallContext ctx) { 
         StringBuilder Functioncall = new StringBuilder();
-        Functioncall.append("\\mathit{").append(ctx.SIGNAL().getText()).append("}(");
+        Functioncall.append(ctx.SIGNAL().getText()).append("(");
         for (int i = 0; i < ctx.exp().size(); i++) {
             Functioncall.append(visit(ctx.exp(i)));
             if (i < ctx.exp().size() - 1) {
