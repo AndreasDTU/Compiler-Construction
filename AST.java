@@ -8,6 +8,7 @@ public abstract class AST{
 	System.err.println(msg);
 	System.exit(-1);
     }
+    public abstract Boolean eval(Environment env);
 };
 
 /* Expressions are similar to arithmetic expressions in the impl
@@ -23,18 +24,30 @@ class Conjunction extends Expr{
     // Example: Signal1 * Signal2 
     Expr e1,e2;
     Conjunction(Expr e1,Expr e2){this.e1=e1; this.e2=e2;}
+    @Override
+    public Boolean eval(Environment env) {
+        return e1.eval(env) && e2.eval(env);
+    }
 }
 
 class Disjunction extends Expr{
     // Example: Signal1 + Signal2 
     Expr e1,e2;
     Disjunction(Expr e1,Expr e2){this.e1=e1; this.e2=e2;}
+    @Override
+    public Boolean eval(Environment env) {
+        return e1.eval(env) || e2.eval(env);
+    }
 }
 
 class Negation extends Expr{
     // Example: /Signal
     Expr e;
     Negation(Expr e){this.e=e;}
+    @Override
+    public Boolean eval(Environment env) {
+        return !e.eval(env);
+    }
 }
 
 class UseDef extends Expr{
@@ -45,11 +58,29 @@ class UseDef extends Expr{
     UseDef(String f, List<Expr> args){
 	this.f=f; this.args=args;
     }
+    @Override
+    public Boolean eval(Environment env) {
+        // Example implementation for "xor" function
+        if (f.equals("xor") && args.size() == 2) {
+            Boolean arg1 = args.get(0).eval(env);
+            Boolean arg2 = args.get(1).eval(env);
+            return (arg1 || arg2) && !(arg1 && arg2);
+        }
+        // Add more functions as needed (e.g., NAND, NOR, etc.)
+        throw new RuntimeException("Unknown function: " + f);
+    }
 }
 
 class Signal extends Expr{
     String varname; // a signal is just identified by a name 
     Signal(String varname){this.varname=varname;}
+    @Override
+    public Boolean eval(Environment env) {
+        if (!env.hasVariable(varname)) {
+            throw new RuntimeException("Signal " + varname + " not found in environment.");
+        }
+        return env.getVariable(varname);
+    }
 }
 
 class Def extends AST{
@@ -61,6 +92,10 @@ class Def extends AST{
     Def(String f, List<String> args, Expr e){
 	this.f=f; this.args=args; this.e=e;
     }
+    public Boolean eval(Environment env) {
+        error("Def called with eval");
+        return false;
+    }
 }
 
 // An Update is any of the lines " signal = expression "
@@ -71,6 +106,10 @@ class Update extends AST{
     String name;  // Signal being updated, e.g. "Signal1"
     Expr e;  // The value it receives, e.g., "/Signal2"
     Update(String name, Expr e){this.e=e; this.name=name;}
+    @Override
+    public Boolean eval(Environment env) {
+        return e.eval(env);  // Evaluate the expression for this signal
+    }
 }
 
 /* A Trace is a signal and an array of Booleans, for instance each
@@ -87,6 +126,11 @@ class Trace extends AST{
     Trace(String signal, Boolean[] values){
 	this.signal=signal;
 	this.values=values;
+    }
+    @Override
+    public Boolean eval(Environment env) {
+        // Traces are usually not evaluated in this sense
+        return true;
     }
 }
 
@@ -132,5 +176,16 @@ class Circuit extends AST{
 	this.definitions=definitions;
 	this.updates=updates;
 	this.siminputs=siminputs;
+    }
+    @Override
+    public Boolean eval(Environment env) {
+        // Evaluate updates in sequence, updating the environment
+        for (Update update : updates) {
+            Boolean result = update.eval(env);
+            env.setVariable(update.name, result);
+        }
+
+        // Return some value; in a real scenario, you'd probably return the final output state or results
+        return true;
     }
 }
