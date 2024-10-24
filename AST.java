@@ -101,16 +101,30 @@ class Def extends AST{
 // An Update is any of the lines " signal = expression "
 // in the update section
 
-class Update extends AST{
-    // Example Signal1 = /Signal2 
-    String name;  // Signal being updated, e.g. "Signal1"
-    Expr e;  // The value it receives, e.g., "/Signal2"
-    Update(String name, Expr e){this.e=e; this.name=name;}
+class Update extends AST {
+    String name;  // The signal being updated, e.g. "Signal1"
+    Expr e;  // The expression whose value is assigned, e.g., "/Signal2"
+    
+    Update(String name, Expr e) {
+        this.e = e;
+        this.name = name;
+    }
+
+    // This method updates the environment with the result of the expression
     @Override
     public Boolean eval(Environment env) {
-        return e.eval(env);  // Evaluate the expression for this signal
+        // Evaluate the expression and get the result
+        Boolean result = e.eval(env);
+        
+        // Update the environment: set the value of the signal to the result
+        env.setVariable(name, result);
+
+
+        return true;
     }
 }
+
+
 
 /* A Trace is a signal and an array of Booleans, for instance each
    line of the .simulate section that specifies the traces for the
