@@ -1,213 +1,244 @@
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.CharStreams;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.List;
+import java.util.ArrayList;
 import java.io.IOException;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+
 public class main {
-    public static void main(String[] args) throws IOException {
-        // we expect exactly one argument: the name of the input file
-        if (args.length == 0) {
-            System.err.println("\nPlease give as input argument a filename\n");
-            return;
-        }
+    public static void main(String[] args) throws IOException{
 
-        // open the input file
-        CharStream input = CharStreams.fromFileName(args[0]);
+	// we expect exactly one argument: the name of the input file
+	if (args.length!=1) {
+	    System.err.println("\n");
+	    System.err.println("Hardware Simulator\n");
+	    System.err.println("==================\n\n");
+	    System.err.println("Please give as input argument a filename\n");
+	    System.exit(-1);
+	}
+	String filename=args[0];
 
-        // create a lexer/scanner
-        HDL0Lexer lex = new HDL0Lexer(input);
-        
-        // get the stream of tokens from the scanner
-        CommonTokenStream tokens = new CommonTokenStream(lex);
-        
-        // create a parser
-        HDL0Parser parser = new HDL0Parser(tokens);
-        
-        // and parse anything from the grammar for "start"
-        ParseTree tree = parser.hdl0();
+	// open the input file
+	CharStream input = CharStreams.fromFileName(filename);
+	    //new ANTLRFileStream (filename); // depricated
+	
+	// create a lexer/scanner
+	hwLexer lex = new hwLexer(input);
+	
+	// get the stream of tokens from the scanner
+	CommonTokenStream tokens = new CommonTokenStream(lex);
+	
+	// create a parser
+	hwParser parser = new hwParser(tokens);
+	
+	// and parse anything from the grammar for "start"
+	ParseTree parseTree = parser.start();
 
-        // Pretty print the result
-        PrettyPrintVisitor prettyPrinter = new PrettyPrintVisitor();
-        String htmlOutput = prettyPrinter.visit(tree);
+	// The JaxMaker is a visitor that produces html/jax output as a string
+	String result = new JaxMaker().visit(parseTree);
+	System.out.println("\n\n\n"+result);
 
-        // Output the generated HTML to a file
-        String inputFileName = args[0].substring(0, args[0].lastIndexOf('.'));
-        String outputFileName = inputFileName + ".html";
+	/* The AstMaker generates the abstract syntax to be used for
+	   the second assignment, where for the start symbol of the
+	   ANTLR grammar, it generates an object of class Circuit (see
+	   AST.java). */
+	
+	Circuit p = (Circuit) new AstMaker().visit(parseTree);
 
-        try (PrintWriter writer = new PrintWriter(new FileWriter(outputFileName))) {
-            writer.println(htmlOutput);
-        } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
-        }
-
-        parser.removeErrorListeners(); // Remove default console error listener
-        parser.addErrorListener(new ConsoleErrorListener()); // Add custom error listener
-
+	/* For the second assignment you need to extend the classes of
+	    AST.java with some methods that correspond to running a
+	    simulation of the given hardware for given simulation
+	    inputs. The method for starting the simulation should be
+	    called here for the Circuit p. */
     }
 }
 
-// Implement the PrettyPrintVisitor class
-class PrettyPrintVisitor extends HDL0BaseVisitor<String> {
-    @Override
-    public String visitHdl0(HDL0Parser.Hdl0Context ctx) {
-        StringBuilder html = new StringBuilder();
-        String title = ctx.hardware().SIGNAL().getText();
-        html.append("<!DOCTYPE html>\n<html><head><title>").append(title).append("</title>")
-            .append("<script src=\"https://polyfill.io/v3/polyfill.min.js?features=es6\"></script>")
-            .append("<script type=\"text/javascript\" id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\"></script>")
-            .append("</head><body>")
-            .append("<h1>").append(title).append("</h1>");
+// The visitor for producing html/jax -- solution for assignment 1, task 3:
 
-        // Visit each section
-        html.append("<h2> Inputs </h2>").append(visitInputs(ctx.inputs()));
-        html.append("<h2> Outputs </h2>").append(visitOutputs(ctx.outputs()));
-        html.append("<h2> Latches </h2>").append(visitLatches(ctx.latches()));
-        html.append("<h2> Definitions </h2>").append(visitDefinitions(ctx.definitions()));
-        html.append("<h2> Updates </h2>").append(visitUpdates(ctx.updates()));
-        html.append("<h2> Simulation inputs </h2>").append(visitSiminputs(ctx.siminputs()));
+class JaxMaker extends AbstractParseTreeVisitor<String> implements hwVisitor<String> {
 
-        html.append("</body></html>");
-        return html.toString();
-    }
+    public String visitStart(hwParser.StartContext ctx){
+	// 
+	String result = "<!DOCTYPE html>\n"+
+	    "<html><head><title> "+ctx.name.getText()+ "</title>\n"+
+	    "<script src=\"https://polyfill.io/v3/polyfill.min.js?features=es6\"></script>\n"+
+	    "<script type=\"text/javascript\" id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\">\n"+
+	    "</script></head><body>\n";
+	result+="<h1>" +ctx.name.getText()+ "</h1>\n"
+	    + "<h2> Inputs </h2>\n";
+       
+	for(Token t:ctx.ins){
+	    result += t.getText() + " ";
+	}
 
-    
-    @Override
-    public String visitInputs(HDL0Parser.InputsContext ctx) {
-        StringBuilder inputs = new StringBuilder();
-        HDL0Parser.Signal_listContext signalList = ctx.signal_list();
-        for (int i = 0; i < signalList.SIGNAL().size(); i++) {
-            inputs.append(signalList.SIGNAL(i).getText());
-            if (i < signalList.SIGNAL().size() - 1) {
-                inputs.append(" "); // Adds a space after if it is not the last one
-            }
-        }
-        
-        inputs.append("<br>");
-        return inputs.toString();
-    }
-    
-    @Override
-    public String visitOutputs(HDL0Parser.OutputsContext ctx) {
-        StringBuilder outputs = new StringBuilder();
-        HDL0Parser.Signal_listContext signalList = ctx.signal_list();
-        for (int i = 0; i < signalList.SIGNAL().size(); i++) {
-            outputs.append(signalList.SIGNAL(i).getText());
-            if (i < signalList.SIGNAL().size() - 1) {
-                outputs.append(" "); // Adds a space after if it is not the last one
-            }
-        }
-        
-        outputs.append("<br>");
-        return outputs.toString();
-    }
+	result+="\n <h2> Outputs </h2>\n ";
+	for(Token t:ctx.outs){
+	    result += t.getText()+ " ";
+	}
 
-    @Override
-    public String visitLatches(HDL0Parser.LatchesContext ctx) {
-        StringBuilder latches = new StringBuilder();
-        HDL0Parser.Signal_listContext signalList = ctx.signal_list();
-        for (int i = 0; i < signalList.SIGNAL().size(); i++) {
-            latches.append(signalList.SIGNAL(i).getText());
-            if (i < signalList.SIGNAL().size() - 1) {
-                latches.append(" "); // Adds a space after if it is not the last one
-            }
-        }
-        
-        latches.append("<br>");
-        return latches.toString();
-    }
+	result+="\n <h2> Latches </h2>\n";
+        for(Token t:ctx.ls){
+	    result += t.getText()+ " ";
+	}
 
-    @Override
-    public String visitDefinitions(HDL0Parser.DefinitionsContext ctx) {
-        StringBuilder definitions = new StringBuilder();
-        for (HDL0Parser.DefinitionContext def : ctx.definition()) {
-            definitions.append("\\(\\mathit{").append(def.SIGNAL().getText()).append("}(");
-    
-            for (int i = 0; i < def.signal_list().size(); i++) {
-                definitions.append(def.signal_list(i).getText()); 
-                if (i < def.signal_list().size() - 1) {
-                    definitions.append(", "); 
-                }
-            }
-    
-            definitions.append(") = ");
-            definitions.append(visit(def.exp()));
-            definitions.append("\\)<br>");
-        }
-        return definitions.toString();
+	result+="\n <h2> Definitions </h2>\n";
+	for(hwParser.DefdeclContext t:ctx.defs){
+	    result += visit(t);
+	}
+	
+	result+="\n <h2> Updates </h2>\n";
+	
+	for(hwParser.UpdatedeclContext t:ctx.up){
+	    result += visit(t);
+	}
+
+	result+="\n <h2> Simulation inputs </h2>\n";
+	for(hwParser.SimInpContext t:ctx.simin)
+	    result+= visit(t);
+
+	result += "\n</body></html>\n";
+	return result;
+    };
+
+    public String visitSimInp(hwParser.SimInpContext ctx){
+	return "<b>"+ctx.in.getText()+"</b>: "+ctx.str.getText()+"<br>\n";
     }
     
-
-
-    @Override
-    public String visitUpdates(HDL0Parser.UpdatesContext ctx) {
-        StringBuilder updates = new StringBuilder();
-        for (HDL0Parser.UpdateContext update : ctx.update()) {
-            updates.append(update.SIGNAL().getText()).append("&larr;\\(");
-            updates.append(visit(update.exp())).append("\\)<br>");
-        }
-        return updates.toString();
+    public String visitUpdatedecl(hwParser.UpdatedeclContext ctx){
+	return ctx.write.getText()+"&larr;\\("+ visit(ctx.e)+"\\)<br>\n";
     }
 
-    @Override
-    public String visitSiminputs(HDL0Parser.SiminputsContext ctx) {
-        StringBuilder simInputs = new StringBuilder();
-        for (HDL0Parser.SiminputContext simInput : ctx.siminput()) {
-            simInputs.append("<b>").append(simInput.SIGNAL().getText()).append("</b>: ").append(simInput.BOOLEAN().toString()).append("<br>");
-
-        }
-        return simInputs.toString();
-    }
-    @Override
-    public String visitNot(HDL0Parser.NotContext ctx) { 
-        return "\\neg(\\mathrm{" + visit(ctx.exp()) + "})";
+    public String visitDefdecl(hwParser.DefdeclContext ctx){
+	String args="";
+	Boolean first=true;
+	for(Token t:ctx.xs){
+	    if(first) first=false; else args+=",";
+	    args+=t.getText();
+	}
+	return "\\(\\mathit{"+ctx.f.getText()+"}("+args+")="+visit(ctx.e)+"\\)<br>\n";
     }
 
-    @Override
-    public String visitAnd(HDL0Parser.AndContext ctx) { 
-        return "(" + visit(ctx.exp(0)) + " \\wedge " + visit(ctx.exp(1)) + ")";
+    public String visitUseDef(hwParser.UseDefContext ctx){
+	String args="";
+	Boolean first=true;
+	for(hwParser.ExprContext e:ctx.es){
+	    if(first) first=false; else args+=",";
+	    args+=visit(e);
+	}
+	return "\\mathit{"+ctx.f.getText()+"}("+args+")";
+    }
+    
+    public String visitSignal(hwParser.SignalContext ctx){
+	return "\\mathrm{"+ctx.x.getText()+"}";
+    };
+
+    public String visitConjunction(hwParser.ConjunctionContext ctx){
+	return "("+visit(ctx.e1)+"\\wedge"+visit(ctx.e2)+")";
+    };
+
+    public String visitDisjunction(hwParser.DisjunctionContext ctx){
+	return "("+visit(ctx.e1)+"\\vee"+visit(ctx.e2)+")";
+    };
+
+    public String visitNegation(hwParser.NegationContext ctx){
+	return "\\neg("+visit(ctx.e)+")";
+    };
+
+    public String visitParenthesis(hwParser.ParenthesisContext ctx){
+	return visit(ctx.e);
     }
 
-    @Override
-    public String visitSignal(HDL0Parser.SignalContext ctx) { 
-        return ctx.SIGNAL().getText(); // Only apply \mathrm to the signal itself
-    }
-
-
-    @Override
-    public String visitOr(HDL0Parser.OrContext ctx) { 
-        return "(" + visit(ctx.exp(0)) + " \\vee " + visit(ctx.exp(1)) + ")"; 
-    }
-    @Override
-    public String visitSignal_list(HDL0Parser.Signal_listContext ctx) {
-        StringBuilder signalList = new StringBuilder();
-        for (int i = 0; i < ctx.SIGNAL().size(); i++) {
-            signalList.append("\\mathrm{").append(ctx.SIGNAL(i).getText()).append("}");
-            if (i < ctx.SIGNAL().size() - 1) {
-                signalList.append(", "); // Add commas between signals in the same list
-            }
-        }
-        return signalList.toString();
-    }
-
-    @Override
-    public String visitFunctioncall(HDL0Parser.FunctioncallContext ctx) { 
-        StringBuilder Functioncall = new StringBuilder();
-        Functioncall.append(ctx.SIGNAL().getText()).append("(");
-        for (int i = 0; i < ctx.exp().size(); i++) {
-            Functioncall.append(visit(ctx.exp(i)));
-            if (i < ctx.exp().size() - 1) {
-                Functioncall.append(", ");
-            }
-        }
-        Functioncall.append(")");
-        return Functioncall.toString();
-    }
-
-    @Override
-    public String visitParen(HDL0Parser.ParenContext ctx) { 
-        StringBuilder Paren = new StringBuilder();
-        Paren.append("(").append(visit(ctx.exp())).append(")"); // Call visit on inner expression
-        return Paren.toString();
-    }
 }
+
+// The visitor for producing the Abstract Syntax (see AST.java).
+
+class AstMaker extends AbstractParseTreeVisitor<AST> implements hwVisitor<AST> {
+
+    public AST visitStart(hwParser.StartContext ctx){
+	List<String> ins=new ArrayList<String>();
+	for(Token t:ctx.ins){
+	    ins.add(t.getText());
+	}
+	List<String> outs=new ArrayList<String>();
+	for(Token t:ctx.outs){
+	    outs.add(t.getText());
+	}
+	List<String> latches=new ArrayList<String>();
+	for(Token t:ctx.ls){
+	    latches.add(t.getText());
+	}
+	List<Def> defs=new ArrayList<Def>();
+	for(hwParser.DefdeclContext t:ctx.defs){
+	    defs.add((Def) visit(t));
+	}
+	List<Update> updates=new ArrayList<Update>();
+	for(hwParser.UpdatedeclContext t:ctx.up){
+	    updates.add((Update) visit(t));
+	}
+	List<Trace> siminp=new ArrayList<Trace>();
+	for(hwParser.SimInpContext t:ctx.simin)
+	    siminp.add((Trace) visit(t));
+	return new Circuit(ctx.name.getText(),ins,outs,latches,defs,updates,siminp);
+    };
+
+    public AST visitSimInp(hwParser.SimInpContext ctx){
+	String s=ctx.str.getText();
+	// s is a string consisting of characters '0' and '1' (not numbers!)
+	Boolean[] tr=new Boolean[s.length()];
+	// for the simulation it is more convenient to work with
+	// Booleans, so converting the string s to an array of
+	// Booleans here:	
+	for(int i=0; i<s.length();i++)
+	    tr[i]=(s.charAt(i)=='1'); 
+	return new Trace(ctx.in.getText(),tr);
+    }
+    
+    public AST visitDefdecl(hwParser.DefdeclContext ctx){
+	List<String> args=new ArrayList<String>();
+	for(Token t:ctx.xs)
+	    args.add(t.getText());
+	return new Def(ctx.f.getText(),args,(Expr) visit(ctx.e));
+    }
+
+    public AST visitUpdatedecl(hwParser.UpdatedeclContext ctx){
+	return new Update(ctx.write.getText(),
+			  (Expr) visit(ctx.e));
+    }
+    
+    
+    public AST visitSignal(hwParser.SignalContext ctx){
+	return new Signal(ctx.x.getText());
+    };
+
+    public AST visitConjunction(hwParser.ConjunctionContext ctx){
+	return new Conjunction((Expr) visit(ctx.e1),
+			       (Expr)visit(ctx.e2));
+    };
+
+    public AST visitDisjunction(hwParser.DisjunctionContext ctx){
+	return new Disjunction((Expr) visit(ctx.e1),
+			       (Expr)visit(ctx.e2));
+    };
+
+    public AST visitNegation(hwParser.NegationContext ctx){
+	return new Negation((Expr) visit(ctx.e)); 
+    };
+
+    public AST visitParenthesis(hwParser.ParenthesisContext ctx){
+	return (Expr) visit(ctx.e);
+    }
+
+    public AST visitUseDef(hwParser.UseDefContext ctx){
+	List<Expr> args=new ArrayList<Expr>();
+	for(hwParser.ExprContext e:ctx.es)
+	    args.add((Expr) visit(e));
+	return new UseDef(ctx.f.getText(),args);
+    }
+	
+}
+
+
