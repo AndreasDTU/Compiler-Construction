@@ -177,7 +177,54 @@ class Circuit extends AST{
 	this.updates=updates;
 	this.siminputs=siminputs;
     }
-    @Override
+    public void initialize(Environment env) {
+        for (int i = 0; i < inputs.size(); i++) {
+            String input = inputs.get(i);
+            Trace inputTrace = siminputs.get(i);
+
+            if (inputTrace.values.length == 0) {
+                error("Siminput is not defined for input signal: " + input);
+            }
+            env.setVariable(input, inputTrace.get(0));
+        }
+        latchesInit(env);
+        for (Update update : updates) {
+            update.eval(env);
+        }
+    }
+
+    public void latchesInit(Environment env) {
+        for (String latch : latches) {
+            env.setVariable(latch + "'", new Constant(0.0));
+        }
+    }
+
+    public void nextCycle(Environment env, int cycle) {
+        for (int i = 0; i < inputs.size(); i++) {
+            String input = inputs.get(i);
+            Trace inputTrace = siminputs.get(i);
+
+            if (cycle >= inputTrace.values.length) {
+                error("Siminput not defined for input signal at cycle " + cycle);
+            }
+            env.setVariable(input, inputTrace.values[cycle]);
+        }
+        latchesInit(env);
+        for (Update update : updates) {
+            update.eval(env);
+        }
+        System.out.println(env);
+    }
+    public void runSimulator(Environment env) {
+        initialize(env);
+        for (int i = 1; i < simlength; i++) {
+            nextCycle(env, i);
+        }
+        for (Trace output : simoutputs) {
+            System.out.println(output.signal + "=" + Arrays.toString(output.values));
+        }
+    }
+        @Override
     public Boolean eval(Environment env) {
         // Evaluate updates in sequence, updating the environment
         for (Update update : updates) {
