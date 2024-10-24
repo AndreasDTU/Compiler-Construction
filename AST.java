@@ -132,6 +132,17 @@ class Trace extends AST{
         // Traces are usually not evaluated in this sense
         return true;
     }
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("Signal: ").append(signal).append(" - Trace: ");
+        
+        for (Boolean value : values) {
+            result.append(value ? "1" : "0");
+        }
+        
+        return result.toString();
+    }
 }
 
 /* The main data structure of this simulator: the entire circuit with
@@ -187,5 +198,37 @@ class Circuit extends AST{
 
         // Return some value; in a real scenario, you'd probably return the final output state or results
         return true;
+    }
+    public void initialize(Environment env) {
+        // 1. Initialize all input signals
+        for (String inputSignal : inputs) {
+            boolean found = false;
+            for (Trace trace : siminputs) {
+                if (trace.signal.equals(inputSignal)) {
+                    // If the siminput is not defined or has no values, throw an error
+                    if (trace.values == null || trace.values.length == 0) {
+                        error("Siminput for signal " + inputSignal + " is not defined or is empty.");
+                    }
+                    // Set the environment for time point 0
+                    env.setVariable(inputSignal, trace.values[0]);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                error("Siminput not defined for input signal: " + inputSignal);
+            }
+        }
+
+        // 2. Initialize latches
+        latchesInit(env);
+
+        // 3. Initialize remaining signals via Updates
+        for (Update update : updates) {
+            env.setVariable(update.name, update.e.eval(env));  // Evaluate and set the signal in the environment
+        }
+
+        // 4. Print the environment to see all variable values
+        System.out.println(env.toString());
     }
 }
