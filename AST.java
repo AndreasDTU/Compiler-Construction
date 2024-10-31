@@ -231,4 +231,67 @@ class Circuit extends AST{
         // 4. Print the environment to see all variable values
         System.out.println(env.toString());
     }
+
+    public void nextCycle(Environment env, int i) {
+        for (String inputSignal : inputs) {
+            boolean found = false;
+            for (Trace trace : siminputs) {
+                if (trace.signal.equals(inputSignal)) {
+                    // Error if the i-th entry is not defined
+                    if (trace.values == null || i >= trace.values.length) {
+                        error("Siminput for signal " + inputSignal + " is not defined for cycle " + i);
+                    }
+                    // Set the value of the input signal in the environment
+                    env.setVariable(inputSignal, trace.values[i]);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                error("Siminput not defined for input signal: " + inputSignal);
+            }
+        }
+
+        // 2. Update the latches
+        latchesUpdate(env);
+
+        // 3. Update all other signals using the Update list
+        for (Update update : updates) {
+            env.setVariable(update.name, update.e.eval(env));  // Evaluate and update the signal in the environment
+        }
+
+        // 4. Print the environment to see all updated variables for this cycle
+        System.out.println("Cycle " + i + " environment:");
+        System.out.println(env.toString());
+    }
+    public void latchesUpdate(Environment env) {
+        // This method should evaluate and update all latch signals
+        for (String latch : latches) {
+            // Assuming some expression for each latch to update its value
+            // For simplicity, we'll just re-evaluate it or assume it has a predefined value
+            // This can be modified depending on how latches are supposed to work in your system
+            if (env.hasVariable(latch)) {
+                // You can implement a custom logic here to evaluate latch expressions
+                Boolean currentValue = env.getVariable(latch);
+                // Example: Toggle the latch value (simple behavior, adjust as needed)
+                env.setVariable(latch, !currentValue);  // Toggle the value
+            } else {
+                // If latch is not in the environment, throw an error
+                error("Latch not defined: " + latch);
+            }
+        }
+    }
+    public void runSimulator(Environment env) {
+        // 1. Initialize the environment (cycle 0)
+        initialize(env);
+        
+        // 2. Determine the number of cycles based on siminputs length
+        int numCycles = siminputs.get(0).values.length; // assuming all siminputs have the same length
+        
+        // 3. Run the simulation for each cycle, starting from cycle 1 up to numCycles - 1
+        for (int i = 1; i < numCycles; i++) {
+            nextCycle(env, i);
+        }
+    }
+
 }
