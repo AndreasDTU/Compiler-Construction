@@ -1,0 +1,45 @@
+
+should be able: adding string with double
+
+if (x>0)
+   y="Hello";
+else
+   y=3;
+output(x+y);
+runtime check, should not give error since addition of string and double is allowed.
+
+
+
+start	:  fdef = funDef;
+	:  cs+=cmd*EOF;
+
+funDef	:  t=TYPE f=IDENT '(' xs+=arg (',' xs+=arg)*
+
+exp	: f=IDENT '(' es+=exp (',' es+=exp)* ')' # FunCall
+
+Double exp(Double b, Double x){
+   if (x>0) return b*exp(b,x-1);
+   else return 1;
+}
+
+b=3;
+x=5;
+
+result = 1;
+
+//text = "Computing "+b+"^"+x+" ";
+
+while(x>0){
+
+output(result);
+
+output(exp(3,5));
+
+//output(test);
+
+
+
+Double exp (Double b, Double x){
+   if(x>0) return b*exp(b,x-1);
+   else return 1;
+}
