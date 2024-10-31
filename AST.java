@@ -9,6 +9,8 @@ public abstract class AST{
 	System.exit(-1);
     }
     public abstract Boolean eval(Environment env);
+
+
 };
 
 /* Expressions are similar to arithmetic expressions in the impl
@@ -185,7 +187,7 @@ class Circuit extends AST{
             if (inputTrace.values.length == 0) {
                 error("Siminput is not defined for input signal: " + input);
             }
-            env.setVariable(input, inputTrace.get(0));
+            env.setVariable(input, inputTrace.values[0]);
         }
         latchesInit(env);
         for (Update update : updates) {
@@ -195,7 +197,16 @@ class Circuit extends AST{
 
     public void latchesInit(Environment env) {
         for (String latch : latches) {
-            env.setVariable(latch + "'", new Constant(0.0));
+            env.setVariable(latch + "'", false);
+        }
+    }
+    public void latchesUpdate(Environment env){
+        for(String latch: latches){
+            Boolean currentValue = env.getVariable(latch);
+            if(currentValue ==null){
+                error("Latch input" +latch+ "not found in environment.");
+            }
+            env.setVariable(latch+"", currentValue);
         }
     }
 
@@ -209,21 +220,13 @@ class Circuit extends AST{
             }
             env.setVariable(input, inputTrace.values[cycle]);
         }
-        latchesInit(env);
+        latchesUpdate(env);
         for (Update update : updates) {
             update.eval(env);
         }
         System.out.println(env);
     }
-    public void runSimulator(Environment env) {
-        initialize(env);
-        for (int i = 1; i < simlength; i++) {
-            nextCycle(env, i);
-        }
-        for (Trace output : simoutputs) {
-            System.out.println(output.signal + "=" + Arrays.toString(output.values));
-        }
-    }
+
         @Override
     public Boolean eval(Environment env) {
         // Evaluate updates in sequence, updating the environment
