@@ -102,15 +102,16 @@ class Def extends AST{
 // in the update section
 
 class Update extends AST {
-    String name;  // The signal being updated, e.g. "Signal1"
-    Expr e;  // The expression whose value is assigned, e.g., "/Signal2"
+    String name;  // The signal being updated, e.g., "Signal1"
+    Expr e;       // The expression whose value is assigned, e.g., "/Signal2"
     
+    // Constructor
     Update(String name, Expr e) {
-        this.e = e;
         this.name = name;
+        this.e = e;
     }
 
-    // This method updates the environment with the result of the expression
+    // Method to evaluate the expression and update the environment
     @Override
     public Boolean eval(Environment env) {
         // Evaluate the expression and get the result
@@ -119,7 +120,7 @@ class Update extends AST {
         // Update the environment: set the value of the signal to the result
         env.setVariable(name, result);
 
-
+        // Return true to indicate successful update
         return true;
     }
 }
