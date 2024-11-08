@@ -222,22 +222,6 @@ class Circuit extends AST{
         }
     }
 
-    public void nextCycle(Environment env, int cycle) {
-        for (int i = 0; i < inputs.size(); i++) {
-            String input = inputs.get(i);
-            Trace inputTrace = siminputs.get(i);
-
-            if (cycle >= inputTrace.values.length) {
-                error("Siminput not defined for input signal at cycle " + cycle);
-            }
-            env.setVariable(input, inputTrace.values[cycle]);
-        }
-        latchesUpdate(env);
-        for (Update update : updates) {
-            update.eval(env);
-        }
-        System.out.println(env);
-    }
 
         @Override
     public Boolean eval(Environment env) {
