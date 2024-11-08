@@ -86,6 +86,10 @@ class Signal extends Expr{
 }
 
 class Def extends AST{
+    Type returntype;
+    String f;
+    List<Arg> arguments;
+    Program p;
     // Definition of a function
     // Example: def xor(A,B) = A * /B + /A * B
     String f; // function name, e.g. "xor"
@@ -97,6 +101,28 @@ class Def extends AST{
     public Boolean eval(Environment env) {
         error("Def called with eval");
         return false;
+    }
+}
+
+class Arg extends AST{
+    Type argtype;
+    String x;
+}
+class FunCall extends Expr{
+    public String fname;
+    public List<Expr> parameters;
+
+    public Boolean eval(Environment env) {
+        Def def=env.getDef(fname);
+        int n=def.arguments.size();
+        if (n!=parameters.size()) error("Wrong number of arguments");
+        Environment nenv = new Environment(env);
+        for (int i=0; i < n; i ++){
+            nenv.setVariable(def.arguments.get(i).x, parameters.get(i).eval(env));
+        }
+        def.p.eval(nenv);
+        return nenv.getVariable("return");
+        
     }
 }
 
@@ -312,5 +338,7 @@ class Circuit extends AST{
             nextCycle(env, i);
         }
     }
+
+
 
 }

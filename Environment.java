@@ -11,10 +11,6 @@ class Environment {
     // you can look up its definition    
     private HashMap<String,Def> defs;
 
-    // Standard constructor that does not care about definitions
-    // You cannot use getDef() below when using this constructor.
-    public Environment(){ this.defs=new HashMap<String,Def>();} 
-
     // Constructor that compute the map of function definitions, given
     // a the set of definitions as available in Circuit. You can then
     // use getDef() below.    
@@ -31,9 +27,12 @@ class Environment {
 
     // Lookup a definition, e.g., "xor"
     public Def getDef(String name){
-	Def d=defs.get(name);
-	if (d==null){ System.err.println("Function not defined: "+name); System.exit(-1); }  
-	return d;
+        Def d=defs.get(name);
+        if (d==null){
+             System.err.println("Function not defined: "+name); 
+             System.exit(-1); 
+            }  
+        return d;
     }
 
     // return the set of all definitions; this is helpful when
