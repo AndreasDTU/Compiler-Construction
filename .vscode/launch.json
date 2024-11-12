@@ -6,8 +6,9 @@
             "name": "Launch Java Program",
             "request": "launch",
             "mainClass": "main",
-            "vmArgs": "-cp .:antlr-4.13.2-complete.jar",   // For Linux/macOS
-            // "vmArgs": "-cp .;antlr-4.13.2-complete.jar", // For Windows
+            //"vmArgs": "-cp .:antlr-4.13.2-complete.jar",   // For Linux/macOS
+            "vmArgs": "-cp .;antlr-4.13.2-complete.jar", // For Windows
+            "args": "01b-hello-world-withdef.hw",
             "cwd": "${workspaceFolder}"
         }
     ]

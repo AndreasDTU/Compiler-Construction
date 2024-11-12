@@ -66,25 +66,12 @@ class UseDef extends Expr{
     }
     @Override
     public Boolean eval(Environment env) {
+        Def d = env.getDef(f);
         Environment nevn = new Environment(env);
-        
-        for (Expr arg : args) {
-            arg.eval(env);
-
-            Def func = env.getDef(f);
-            Expr expr = env.getDef(f).e;
-            if (func.args.size() == args.size()){
-                
-            }
+        for (int i = 0; i < args.size(); i++) {
+            nevn.setVariable(d.args.get(i), args.get(i).eval(env));
         }
-        // Example implementation for "xor" function
-        if (f.equals("xor") && args.size() == 2) {
-            Boolean arg1 = args.get(0).eval(env);
-            Boolean arg2 = args.get(1).eval(env);
-            return (arg1 || arg2) && !(arg1 && arg2);
-        }
-        // Add more functions as needed (e.g., NAND, NOR, etc.)
-        throw new RuntimeException("Unknown function: " + f);
+        return d.e.eval(nevn);
     }
 }
 
@@ -135,14 +122,10 @@ class Update extends AST {
     // Method to evaluate the expression and update the environment
     @Override
     public Boolean eval(Environment env) {
-        // Evaluate the expression and get the result
-        Boolean result = e.eval(env);
-        
         // Update the environment: set the value of the signal to the result
-        env.setVariable(name, result);
-
-        // Return true to indicate successful update
-        return true;
+        env.setVariable(name, e.eval(env));
+        
+        return true; //Succes
     }
 }
 
@@ -230,6 +213,7 @@ class Circuit extends AST{
         for (String latch : latches) {
             env.setVariable(latch + "'", false);
         }
+       
     }
     public void latchesUpdate(Environment env){
         for(String latch: latches){
@@ -237,20 +221,13 @@ class Circuit extends AST{
             if(currentValue ==null){
                 error("Latch input" +latch+ "not found in environment.");
             }
-            env.setVariable(latch+"", currentValue);
+            env.setVariable(latch + "'", currentValue);
         }
     }
 
 
-        @Override
+    @Override
     public Boolean eval(Environment env) {
-        // Evaluate updates in sequence, updating the environment
-        for (Update update : updates) {
-            Boolean result = update.eval(env);
-            env.setVariable(update.name, result);
-        }
-
-        // Return some value; in a real scenario, you'd probably return the final output state or results
         return true;
     }
     public void initialize(Environment env) {
@@ -276,14 +253,14 @@ class Circuit extends AST{
 
         // 2. Initialize latches
         latchesInit(env);
-
         // 3. Initialize remaining signals via Updates
         for (Update update : updates) {
-            env.setVariable(update.name, update.e.eval(env));  // Evaluate and set the signal in the environment
+            update.eval(env);  // Evaluate and set the signal in the environment
         }
 
         // 4. Print the environment to see all variable values
-        System.out.println(env.toString());
+        System.out.println("Cycle " + 0 + " environment:");
+        System.out.println(env.toString());  
     }
 
     public void nextCycle(Environment env, int i) {
@@ -311,15 +288,22 @@ class Circuit extends AST{
 
         // 3. Update all other signals using the Update list
         for (Update update : updates) {
-            env.setVariable(update.name, update.e.eval(env));  // Evaluate and update the signal in the environment
+           update.eval(env);
         }
 
         // 4. Print the environment to see all updated variables for this cycle
-        System.out.println("Cycle " + i + " environment:");
+        System.out.println("Cycle " + (i) + " environment:");
+        //Should only print the outputs given + input of button XD
         System.out.println(env.toString());
     }
 
     public void runSimulator(Environment env) {
+        //Check if all siminputs are the same length
+        for (int i = 0; i < siminputs.size()-1; i++) {
+            if (siminputs.get(i) == siminputs.get(i+1)) {
+
+            } else error("Siminputs are not of same lenght");
+        }
         // 1. Initialize the environment (cycle 0)
         initialize(env);
         
