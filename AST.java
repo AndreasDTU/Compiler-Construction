@@ -154,12 +154,12 @@ class Trace extends AST{
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        result.append("Signal: ").append(signal).append(" - Trace: ");
+        
         
         for (Boolean value : values) {
             result.append(value ? "1" : "0");
         }
-        
+        result.append(" ").append(signal);
         return result.toString();
     }
 }
@@ -231,6 +231,20 @@ class Circuit extends AST{
         return true;
     }
     public void initialize(Environment env) {
+        // 0. Very important
+        int i = 0;
+        simoutputs = new ArrayList<>();
+        for (String output : outputs) {
+            int lenth = siminputs.get(0).values.length;
+                Boolean[] arrayu = new Boolean[lenth];
+                for (int j = 0; j < lenth; j++) {
+                    arrayu[j] = true;      
+                }
+                      
+                simoutputs.add(i, new Trace(output, arrayu));
+                i++;
+            
+        }
         // 1. Initialize all input signals
         for (String inputSignal : inputs) {
             boolean found = false;
@@ -259,8 +273,9 @@ class Circuit extends AST{
         }
 
         // 4. Print the environment to see all variable values
-        System.out.println("Cycle " + 0 + " environment:");
-        System.out.println(env.toString());  
+        for (int j = 0; j < simoutputs.size(); j++) {
+            simoutputs.get(j).values[0] = env.getVariable(simoutputs.get(j).signal);
+        }
     }
 
     public void nextCycle(Environment env, int i) {
@@ -291,19 +306,20 @@ class Circuit extends AST{
            update.eval(env);
         }
 
-        // 4. Print the environment to see all updated variables for this cycle
-        System.out.println("Cycle " + (i) + " environment:");
-        //Should only print the outputs given + input of button XD
-        System.out.println(env.toString());
+        for (int j = 0; j < simoutputs.size(); j++) {
+            simoutputs.get(j).values[i] = env.getVariable(simoutputs.get(j).signal);
+        }
     }
-
+    public void printState(Environment env) {
+        for (Trace input : siminputs) {
+            System.out.println(input);
+        }
+        for (Trace output : simoutputs) {
+            System.out.println(output);
+        }
+    }
     public void runSimulator(Environment env) {
         //Check if all siminputs are the same length
-        for (int i = 0; i < siminputs.size()-1; i++) {
-            if (siminputs.get(i) == siminputs.get(i+1)) {
-
-            } else error("Siminputs are not of same lenght");
-        }
         // 1. Initialize the environment (cycle 0)
         initialize(env);
         
@@ -314,6 +330,7 @@ class Circuit extends AST{
         for (int i = 1; i < numCycles; i++) {
             nextCycle(env, i);
         }
+        printState(env);
     }
 
 
