@@ -12,7 +12,12 @@ public abstract class AST{
 
 
 };
-
+abstract class Program extends AST{
+    abstract public Boolean eval(Environment env);
+}
+abstract class Condition extends AST{
+    abstract public Boolean eval(Environment env);
+}
 /* Expressions are similar to arithmetic expressions in the impl
    language: the atomic expressions are just Signal (similar to
    variables in expressions) and they can be composed to larger
@@ -21,7 +26,6 @@ public abstract class AST{
    functions defined in the definitions. */
 
 abstract class Expr extends AST{}
-
 class Conjunction extends Expr{
     // Example: Signal1 * Signal2 
     Expr e1,e2;
@@ -62,6 +66,17 @@ class UseDef extends Expr{
     }
     @Override
     public Boolean eval(Environment env) {
+        Environment nevn = new Environment(env);
+        
+        for (Expr arg : args) {
+            arg.eval(env);
+
+            Def func = env.getDef(f);
+            Expr expr = env.getDef(f).e;
+            if (func.args.size() == args.size()){
+                
+            }
+        }
         // Example implementation for "xor" function
         if (f.equals("xor") && args.size() == 2) {
             Boolean arg1 = args.get(0).eval(env);
@@ -86,10 +101,6 @@ class Signal extends Expr{
 }
 
 class Def extends AST{
-    Type returntype;
-    String f;
-    List<Arg> arguments;
-    Program p;
     // Definition of a function
     // Example: def xor(A,B) = A * /B + /A * B
     String f; // function name, e.g. "xor"
@@ -98,33 +109,15 @@ class Def extends AST{
     Def(String f, List<String> args, Expr e){
 	this.f=f; this.args=args; this.e=e;
     }
+    @Override
     public Boolean eval(Environment env) {
-        error("Def called with eval");
-        return false;
+        return true;
     }
 }
 
-class Arg extends AST{
-    Type argtype;
-    String x;
-}
-class FunCall extends Expr{
-    public String fname;
-    public List<Expr> parameters;
 
-    public Boolean eval(Environment env) {
-        Def def=env.getDef(fname);
-        int n=def.arguments.size();
-        if (n!=parameters.size()) error("Wrong number of arguments");
-        Environment nenv = new Environment(env);
-        for (int i=0; i < n; i ++){
-            nenv.setVariable(def.arguments.get(i).x, parameters.get(i).eval(env));
-        }
-        def.p.eval(nenv);
-        return nenv.getVariable("return");
-        
-    }
-}
+
+
 
 // An Update is any of the lines " signal = expression "
 // in the update section

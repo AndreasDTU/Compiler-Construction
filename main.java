@@ -48,7 +48,8 @@ public class main {
 	   AST.java). */
 	
 	Circuit p = (Circuit) new AstMaker().visit(parseTree);
-
+	Environment env = new Environment();
+	p.runSimulator(env);
 	/* For the second assignment you need to extend the classes of
 	    AST.java with some methods that correspond to running a
 	    simulation of the given hardware for given simulation

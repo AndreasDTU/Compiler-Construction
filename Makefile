@@ -31,4 +31,4 @@ grun:	hwLexer.class hwParser.class 01-hello-world.hw
 	$(grun) impl start -gui -tokens 01-hello-world.hw
 
 clean:
-	rm $(GENERATED) *.class hw.interp hwLexer.interp hwLexer.tokens hw.tokens
+	rm $(GENERATED) *.class hw.interp hwLexer.interp hwLexer.tokens hw.tokens *.html
